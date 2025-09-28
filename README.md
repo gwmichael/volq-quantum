@@ -22,6 +22,7 @@ This project is 100% coded in Python with NumPy.
   - Three-qubit gates, such as Toffoli (CCNOT) gates
   - General n-qubit controlled gates, which can be generated from scratch and apply any single qubit gate for any n control bits in any order
 - Domain Specific Language (DSL) for generating unitary matrix operators from string inputs
+- Easy-to-read string representation of the quantum circuit state
 - Support for running on the CPU or GPU
 - Thorough unit testing, to rigorously prove the validity and correctness of the framework
 ## Planned Features
