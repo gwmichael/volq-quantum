@@ -11,8 +11,8 @@ class Circuit:
             output_rounding_dp = 5
         ):
         if qubits < 1:
-            raise ValueError("Qubits parameter must be at least 1, got "
-                             + str(qubits))
+            raise ValueError(
+                "Qubits parameter must be at least 1, got " + str(qubits))
 
         # Choose to load cupy (numpy but for GPUs) or numpy
         if hardware_mode == "GPU":
