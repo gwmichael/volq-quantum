@@ -6,7 +6,7 @@ class Circuit:
             self,
             qubits: int,
             operator_cache: bool = False,
-            hardware_mode: str = 'CPU',
+            hardware_mode: str = "CPU",
             DEBUG_syntax_validation: bool = True,
             output_rounding_dp = 5
         ):
@@ -15,7 +15,7 @@ class Circuit:
                              + str(qubits))
 
         # Choose to load cupy (numpy but for GPUs) or numpy
-        if hardware_mode == 'GPU':
+        if hardware_mode == "GPU":
             import cupy as np
         else:
             import numpy as np
@@ -51,17 +51,17 @@ class Circuit:
 
         # Map strings to gates
         self.SINGLE_QUBIT_GATES = {
-            'I': self.IDENTITY,
-            'X': self.PAULI_X,
-            'Y': self.PAULI_Y,
-            'Z': self.PAULI_Z,
-            'H': self.HADAMARD
+            "I": self.IDENTITY,
+            "X": self.PAULI_X,
+            "Y": self.PAULI_Y,
+            "Z": self.PAULI_Z,
+            "H": self.HADAMARD
         }
 
         self.ALIASES = {
-            'NOT' : 'X',
-            'TOFFOLI' : 'CCX',
-            'TOFF' : 'CCX'
+            "NOT" : "X",
+            "TOFFOLI" : "CCX",
+            "TOFF" : "CCX"
         }
 
         # WARNING: This option is intended for testing new syntax before
@@ -190,7 +190,7 @@ class Circuit:
             ## Gate validity check
             # Advance past any set control wires
             operator_cursor = 0
-            while token[operator_cursor] == 'C':
+            while token[operator_cursor] == "C":
                 operator_cursor += 1
             # Then check gate
             gate = token[operator_cursor]
@@ -233,7 +233,7 @@ class Circuit:
         tokenized_key = re.split(" ", operator_key)
 
         for token in tokenized_key:
-            if token[0] == 'C':
+            if token[0] == "C":
                 gates.append(self.compile_controlled_gate(token))
             else:
                 gates.append(self.SINGLE_QUBIT_GATES[token[0]])
@@ -247,7 +247,7 @@ class Circuit:
         # Count number of control wires
         control_wires = 0
         for char in token:
-            if char == 'C':
+            if char == "C":
                 control_wires += 1
 
         ## Decompose token into array of [letter, index] pairs
@@ -261,7 +261,7 @@ class Circuit:
             # Compute the index by passing each digit backwards until we
             # reach a comma or a gate
             digit = 0
-            while token[tail_cursor] != ',':
+            while token[tail_cursor] != ",":
                 if i == tail_cursor:
                     break
                 gate_structure[i][1] += int(token[tail_cursor]) * (10 ** digit)
@@ -284,7 +284,7 @@ class Circuit:
 
         ## Find target gate in gate_structure
         i = 0
-        while gate_structure[i][0] == 'C':
+        while gate_structure[i][0] == "C":
             i += 1
         target_gate_index = i
         U = self.SINGLE_QUBIT_GATES[gate_structure[target_gate_index][0]]
