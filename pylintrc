@@ -184,7 +184,7 @@ evaluation=10.0 - ((float(5 * error + warning + refactor + convention) / stateme
 
 # Good variable names which should always be accepted, separated by a comma
 ### MG: Added extra good-names to permit mathematical variables
-good-names=main,_,U,U_0,U_1,i,j,k,np,operator_U
+good-names=main,_,U,U_0,U_1,i,j,k,np,operator_U,U_key
 
 # Bad variable names which should always be refused, separated by a comma
 bad-names=
