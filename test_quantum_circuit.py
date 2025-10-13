@@ -14,11 +14,11 @@ PAULI_Z = np.array([[1,0],[0,-1]], dtype = complex)
 HADAMARD = (1 / np.sqrt(2)) * np.array([[1, 1], [1, -1]], dtype = complex)
 
 SINGLE_QUBIT_GATES = {
-    'I': IDENTITY,
-    'X': PAULI_X,
-    'Y': PAULI_Y,
-    'Z': PAULI_Z,
-    'H': HADAMARD
+    "I": IDENTITY,
+    "X": PAULI_X,
+    "Y": PAULI_Y,
+    "Z": PAULI_Z,
+    "H": HADAMARD
 }
 
 def generate_ket_0_state(qubits):
@@ -231,7 +231,7 @@ class TestQuantumCircuit(unittest.TestCase):
                     testCircuit.DEBUG_get_circuit_state(),
                     expectedState))
             print(f"test_measurement: Test measurement of " +
-                  f"|{'0' * qubits}> state passed")
+                  f"|{"0" * qubits}> state passed")
 
             # Apply X⊗n to testCircuit to get the state |1..1>
             # Then apply measurement and check
@@ -244,7 +244,7 @@ class TestQuantumCircuit(unittest.TestCase):
                     testCircuit.DEBUG_get_circuit_state(),
                     expectedState))
             print(f"test_measurement: Test measurement of " +
-                  f"|{'1' * qubits}> state passed")
+                  f"|{"1" * qubits}> state passed")
 
             # Revert circuit to |0..0> and apply Y⊗n to get |i..i>,
             # Then check that it collapses to |1..1>
@@ -259,7 +259,7 @@ class TestQuantumCircuit(unittest.TestCase):
                     testCircuit.DEBUG_get_circuit_state(),
                     expectedState))
             print(f"test_measurement: Test measurement of " +
-                  f"|{'1' * qubits}> state collapsed from complex plane passed")
+                  f"|{"1" * qubits}> state collapsed from complex plane passed")
 
     def test_random_measurement_sampling(self):
         for i in range(1, MAX_QUBITS + 1):
