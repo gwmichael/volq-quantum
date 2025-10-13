@@ -30,7 +30,7 @@ class Circuit:
         # Setup basis vector of qubit states
         self._qubits = qubits
         self._circuit_state = np.zeros(2 ** self._qubits, dtype = complex)
-        # Set circuit state to |00...0>
+        # Set circuit state to |00...0⟩
         self._circuit_state[0] = 1
         self._operator_cache_state = operator_cache
         self._operator_cache = {}
@@ -44,10 +44,10 @@ class Circuit:
         self.HADAMARD = (1 / np.sqrt(2)) * np.array([[1, 1], [1, -1]],
                                                     dtype = complex)
 
-        self.KET_0 = np.array([1,0], dtype = complex)             # |0>
-        self.KET_1 = np.array([0,1], dtype = complex)             # |1>
-        self.KETBRA_00 = np.outer(self.KET_0, self.KET_0.conj())  # |0><0|
-        self.KETBRA_11 = np.outer(self.KET_1, self.KET_1.conj())  # |1><1|
+        self.KET_0 = np.array([1,0], dtype = complex)             # |0⟩
+        self.KET_1 = np.array([0,1], dtype = complex)             # |1⟩
+        self.KETBRA_00 = np.outer(self.KET_0, self.KET_0.conj())  # |0⟩⟨0|
+        self.KETBRA_11 = np.outer(self.KET_1, self.KET_1.conj())  # |1⟩⟨1|
 
         # Map strings to gates
         self.SINGLE_QUBIT_GATES = {
@@ -72,7 +72,7 @@ class Circuit:
 
     def reset_circuit_state(self):
         np = self.np
-        # Soft reset the circuit state to |00...0>
+        # Soft reset the circuit state to |00...0⟩
         self._circuit_state = np.zeros(2 ** self._qubits, dtype = complex)
         self._circuit_state[0] = 1
 
