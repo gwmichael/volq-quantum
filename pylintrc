@@ -1,3 +1,13 @@
+# Notice from Michael Goodwin (NetMasterMichael)
+#
+# This pylintrc file uses the Google styleguide as the baseline,
+# although some minor modifications have been made to allow for
+# usage of UPPER_CASE constants and mathematical variables which don't
+# adhere to snake_case.
+#
+# The minimal amount of changes required were made and no other rules
+# have been relaxed.
+
 # This Pylint rcfile contains a best-effort configuration to uphold the
 # best-practices and style described in the Google Python style guide:
 #   https://google.github.io/styleguide/pyguide.html
@@ -173,7 +183,8 @@ evaluation=10.0 - ((float(5 * error + warning + refactor + convention) / stateme
 [BASIC]
 
 # Good variable names which should always be accepted, separated by a comma
-good-names=main,_
+### MG: Added extra good-names to permit mathematical variables
+good-names=main,_,U,U_0,U_1,i,j,k,np,operator_U
 
 # Bad variable names which should always be refused, separated by a comma
 bad-names=
@@ -199,7 +210,8 @@ variable-rgx=^[a-z][a-z0-9_]*$
 const-rgx=^(_?[A-Z][A-Z0-9_]*|__[a-z0-9_]+__|_?[a-z][a-z0-9_]*)$
 
 # Regular expression matching correct attribute names
-attr-rgx=^_{0,2}[a-z][a-z0-9_]*$
+### MG: Updated to allow UPPER_CASE for attributes
+attr-rgx=^_{0,2}(?:[a-z][a-z0-9_]*|[A-Z][A-Z0-9_]*)$
 
 # Regular expression matching correct argument names
 argument-rgx=^[a-z][a-z0-9_]*$
