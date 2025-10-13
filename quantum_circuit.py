@@ -204,9 +204,9 @@ class Circuit:
             split_gate_indices = gate_indices.split(",")
             for gate_index in split_gate_indices:
                 if int(gate_index) > self._qubits:
-                    raise ValueError(f"Invalid gate provided: Received " +
-                        "{token}, applies to wire {gate_index} but there are " +
-                        "only {str(self._qubits)} qubits")
+                    raise ValueError("Invalid gate provided: Received " +
+                        f"{token}, applies to wire {gate_index} but there " +
+                        f"are only {str(self._qubits)} qubits")
 
 
     def compile_operator(self, operator_key):
