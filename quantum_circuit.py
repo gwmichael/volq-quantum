@@ -3,7 +3,7 @@ import re
 
 class Circuit:
 
-    def __init__(self, qubits: int, operator_cache: bool = False, hardware_mode: str = 'CPU', DEBUG_syntax_validation: bool = True, output_rounding = 5):
+    def __init__(self, qubits: int, operator_cache: bool = False, hardware_mode: str = 'CPU', DEBUG_syntax_validation: bool = True, output_rounding_dp = 5):
         if qubits < 1:
             raise ValueError("Qubits parameter must be at least 1, got " + str(qubits))
 
@@ -27,7 +27,7 @@ class Circuit:
         self._circuit_state[0] = 1
         self._operator_cache_state = operator_cache
         self._operator_cache = {}
-        self._output_rounding = output_rounding
+        self._output_rounding_dp = output_rounding_dp
 
         # Gates
         self.IDENTITY = np.array([[1,0],[0,1]], dtype = complex)
@@ -324,8 +324,8 @@ class Circuit:
         for state in all_circuit_states:
             amplitude = self._circuit_state[state]
             # Separate real and imaginary parts
-            amp_real = np.round(np.real(amplitude), self._output_rounding)
-            amp_imag = np.round(np.imag(amplitude), self._output_rounding)
+            amp_real = np.round(np.real(amplitude), self._output_rounding_dp)
+            amp_imag = np.round(np.imag(amplitude), self._output_rounding_dp)
             state_string = ""
             # Add real part
             # If it is equal to 1, we don't add the real part
