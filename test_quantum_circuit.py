@@ -85,9 +85,9 @@ class TestQuantumCircuit(unittest.TestCase):
         self.assertRaises(ValueError, test_circuit.apply_operator, "H0 H1 H2")
 
         # Test gate outside index
-        self.assertRaises(ValueError, test_circuit.apply_operator, "H99999")
-        self.assertRaises(ValueError, test_circuit.apply_operator, "CNOT0,99999")
-        self.assertRaises(ValueError, test_circuit.apply_operator, "CNOT99999,0")
+        self.assertRaises(ValueError, test_circuit.apply_operator, "H9999")
+        self.assertRaises(ValueError, test_circuit.apply_operator, "CNOT0,9999")
+        self.assertRaises(ValueError, test_circuit.apply_operator, "CNOT9999,0")
 
         # Test invalid syntax splitting indices in a controlled gate
         self.assertRaises(ValueError, test_circuit.apply_operator, "CNOT0;1")
@@ -160,7 +160,7 @@ class TestQuantumCircuit(unittest.TestCase):
                 zero_state = generate_ket_0_state(qubits)
                 expected_state = zero_state
                 U = SINGLE_QUBIT_GATES[gate]
-                for j in range(1, i):
+                for _ in range(1, i):
                     U = np.kron(U, IDENTITY)
                 expected_state = np.dot(U, expected_state)
                 test_circuit.apply_operator(gate + "0")
@@ -181,7 +181,7 @@ class TestQuantumCircuit(unittest.TestCase):
                 test_circuit = Circuit(qubits)
                 expected_state = generate_ket_0_state(qubits)
                 U = np.array([1], dtype = complex)
-                for j in range(0, i - 1):
+                for _ in range(0, i - 1):
                     U = np.kron(U, IDENTITY)
                 U = np.kron(U, SINGLE_QUBIT_GATES[gate])
                 expected_state = np.dot(U, expected_state)
@@ -203,7 +203,7 @@ class TestQuantumCircuit(unittest.TestCase):
                 test_circuit = Circuit(qubits)
                 expected_state = generate_ket_0_state(qubits)
                 U = np.array([1], dtype = complex)
-                for j in range(0, i):
+                for _ in range(0, i):
                     U = np.kron(SINGLE_QUBIT_GATES[gate], U)
                 expected_state = np.dot(U, expected_state)
                 U_key = generate_uniform_single_gate_circuit_dsl(gate, qubits)
@@ -271,7 +271,7 @@ class TestQuantumCircuit(unittest.TestCase):
             while reruns != 0:
                 test_circuit = Circuit(qubits, operator_cache = True)
                 seen_states = set()
-                for j in range(0, int(samples)):
+                for _ in range(0, int(samples)):
                     test_circuit.reset_circuit_state()
                     test_circuit.apply_operator(
                         generate_uniform_single_gate_circuit_dsl("H", qubits))
@@ -306,7 +306,7 @@ class TestQuantumCircuit(unittest.TestCase):
             accepted_0_state[0] = 1 + 0j
             accepted_1_state = np.zeros(2 ** qubits, dtype = complex)
             accepted_1_state[2 ** (qubits - 1)] = 1 + 0j
-            for j in range(0, repeats):
+            for _ in range(0, repeats):
                 test_circuit.reset_circuit_state()
                 test_circuit.apply_operator("H0")
                 test_circuit.measure()
@@ -363,7 +363,7 @@ class TestQuantumCircuit(unittest.TestCase):
         self.assertTrue(
             np.array_equal(
                 cnot,
-                test_circuit._operator_cache["CX1,0"]))
+                test_circuit._operator_cache["CX1,0"])) # pylint: disable=protected-access
         reverse_cnot = np.array(
             [[1,0,0,0],
              [0,0,0,1],
@@ -373,7 +373,7 @@ class TestQuantumCircuit(unittest.TestCase):
         self.assertTrue(
             np.array_equal(
                 reverse_cnot,
-                test_circuit._operator_cache["CX0,1"]))
+                test_circuit._operator_cache["CX0,1"])) # pylint: disable=protected-access
         print("test_cnot_compilation: Test passed")
 
     def test_cnot_execution(self):
@@ -409,7 +409,7 @@ class TestQuantumCircuit(unittest.TestCase):
             outcome_ghz_1[(2 ** qubits) - 1] = 1 + 0j
             samples = 100
             test_circuit = Circuit(qubits, operator_cache = True)
-            for j in range(0, samples):
+            for _ in range(0, samples):
                 # Reset circuit and apply Hadamard on first wire
                 test_circuit.reset_circuit_state()
                 test_circuit.apply_operator("H0")
