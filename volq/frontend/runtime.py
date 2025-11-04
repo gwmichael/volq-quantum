@@ -1,7 +1,7 @@
 import volq.backend as v
 from .instructions import Opcode, Instruction
 
-class Runner:
+class Runtime:
     
     def __init__(self):
         self._program = []

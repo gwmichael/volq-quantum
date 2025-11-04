@@ -1,6 +1,6 @@
 import volq.backend as v
 from .instructions import Opcode, Instruction
-from .quantum_circuit_runner import Runner
+from .runtime import Runtime
 import sys
 
 class Interpreter:
@@ -12,7 +12,7 @@ class Interpreter:
         direct_execution_mode = False
         file_execution_mode = False
         self.arguments = sys.argv[1:]
-        self._execution_stack = Runner() # TODO: There is no quantum circuit auto-initialised in Runner, so to amend interpreter to initialise it intentionally
+        self._execution_stack = Runtime() # TODO: There is no quantum circuit auto-initialised in Runner, so to amend interpreter to initialise it intentionally
         self._circuit = None
         self._circuit_init = False
         self._qubits = None
