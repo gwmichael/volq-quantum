@@ -57,6 +57,7 @@ class Runner:
     def execute_next_instruction(self):
         # TODO: Add exception when there is no next instruction
         # self.execute_immediate(next instruction)
+        self._instruction_pointer += 1
         pass
 
     # Execute the whole program once
@@ -80,7 +81,6 @@ class Runner:
                 self._runs = instruction.operand
             case Opcode.INIT:
                 self.init_circuit()
-
             case Opcode.APPLY:
                 self._circuit.apply_operator(instruction.operand)
             case Opcode.MEASURE:
@@ -91,7 +91,6 @@ class Runner:
             case Opcode.SHOW:
                 # TODO Implement show state, histogram, program, config
                 pass
-        self._instruction_pointer += 1
 
     def get_results_histogram(self):
         pass
