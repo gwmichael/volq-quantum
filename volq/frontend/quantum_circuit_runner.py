@@ -9,7 +9,7 @@ class Runner:
         # Live mode: Execute instructions immediately as they're loaded, only use the major queue
         self._live_mode = False
         self._circuit = None
-        self._circuit_init = False
+        self._circuit_initialised = False
         self._qubits = None
         self._runs = 1
         self._show_style = None
@@ -38,8 +38,9 @@ class Runner:
 
     def init_circuit(self):
         self._circuit = v.Circuit(self._qubits)
+        self._circuit_initialised = True
 
-    def reset_circuit(self):
+    def reset_circuit_state(self):
         self.init_circuit()
         self.reload_program()
 
@@ -70,7 +71,26 @@ class Runner:
 
     # Maybe a function that just directly takes an instruction & executes it (for live mode?)
     def execute_immediate(self, instruction: Instruction):
-        pass        
+        match instruction.opcode:
+            case Opcode.QUBITS:
+                if self._circuit_initialised == True:
+                    # TODO Throw exception that circuit is already initialised
+                    pass
+                self._qubits = instruction.operand
+            case Opcode.RUNS:
+                self._runs = instruction.operand
+            case Opcode.INIT:
+                self.init_circuit()
+            case Opcode.APPLY:
+                self._circuit.apply_operator(instruction.operand)
+            case Opcode.MEASURE:
+                # TODO Implement partial measure in quantum_circuit, then add more detailed operand logic here
+                self._circuit.measure()
+            case Opcode.NOP:
+                pass
+            case Opcode.SHOW:
+                # TODO Implement show state, histogram, program, config
+                self._show_style = instruction.operand
 
     def get_results_histogram(self):
         pass
