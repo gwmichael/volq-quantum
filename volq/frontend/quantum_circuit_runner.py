@@ -6,6 +6,7 @@ class Runner:
     def __init__(self):
         self._program = []
         self._instruction_pointer = 0
+        self._marked_instruction_pointer = None
         # Live mode: Execute instructions immediately as they're loaded, only use the major queue
         self._live_mode = False
         self._circuit = None
@@ -45,7 +46,7 @@ class Runner:
         self.reload_program()
 
     def reload_program(self):
-        self._instruction_pointer = 0
+        self._instruction_pointer = self._marked_instruction_pointer
 
     def clear_program(self):
         self._program = []
@@ -78,9 +79,13 @@ class Runner:
                     pass
                 self._qubits = instruction.operand
             case Opcode.RUNS:
+                if self._circuit_initialised == True:
+                    # TODO Throw exception that circuit is already initialised
+                    pass
                 self._runs = instruction.operand
             case Opcode.INIT:
                 self.init_circuit()
+                self._marked_instruction_pointer = self._instruction_pointer + 1
             case Opcode.APPLY:
                 self._circuit.apply_operator(instruction.operand)
             case Opcode.MEASURE:
