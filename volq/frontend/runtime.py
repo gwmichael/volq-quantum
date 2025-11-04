@@ -13,9 +13,10 @@ class Runtime:
         self._circuit_initialised = False
         self._qubits = None
         self._runs = 1
-        self._show_style = None
+        self._iteration = 1
+        self._show_style = None # TODO Implement showing multiple string styles
         # Results will be stored as a hashmap, so that a histogram can be generated using matplotlib
-        self._results = []
+        self._results = {}
 
     def set_qubits(self, qubits):
         if (self._circuit == None):
@@ -58,31 +59,39 @@ class Runtime:
     def execute_next_instruction(self):
         # TODO: Add exception when there is no next instruction
         # self.execute_immediate(next instruction)
+        self.execute_immediate(self._program[self._instruction_pointer])
         self._instruction_pointer += 1
-        pass
 
     # Execute the whole program once
-    def execute_all_instructions(self):
-        pass
+    def execute_until_last_instruction(self):
+        for i in range(self._instruction_pointer, len(self._program)):
+            self.execute_next_instruction()
 
     # Execute the whole program {self._runs} times
     def execute_all_runs(self):
-        pass
+        while True:
+            self.execute_until_last_instruction()
+            self.save_state_to_results()
+            self.reset_circuit_state()
+            if self._iteration < self._runs:
+                self._iteration += 1
+                continue
+            else:
+                break
         #return self.get_results_histogram()
 
-    # Maybe a function that just directly takes an instruction & executes it (for live mode?)
     def execute_immediate(self, instruction: Instruction):
         match instruction.opcode:
             case Opcode.QUBITS:
                 if self._circuit_initialised == True:
                     # TODO Throw exception that circuit is already initialised
                     pass
-                self._qubits = instruction.operand
+                self._qubits = int(instruction.operand)
             case Opcode.RUNS:
                 if self._circuit_initialised == True:
                     # TODO Throw exception that circuit is already initialised
                     pass
-                self._runs = instruction.operand
+                self._runs = int(instruction.operand)
             case Opcode.INIT:
                 self.init_circuit()
                 self._marked_instruction_pointer = self._instruction_pointer + 1
@@ -97,8 +106,18 @@ class Runtime:
                 # TODO Implement show state, histogram, program, config
                 pass
 
+    def save_state_to_results(self):
+        state = self._circuit.get_state_as_string()
+        # Is state already recorded in results?
+        if state in self._results:
+            # Increment by 1
+            self._results[state] += 1
+        else:
+            # It's showing up for the first time, so set to 1
+            self._results[state] = 1
+
     def get_results_histogram(self):
         pass
 
     def get_results(self):
-        pass
+        return self._results
