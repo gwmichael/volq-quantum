@@ -32,6 +32,9 @@ class Runner:
 
     def get_runs(self):
         return self._runs
+    
+    def get_program(self):
+        return self._program_major_queue
 
     def init_circuit(self):
         self._circuit = v.Circuit(self._qubits)
@@ -53,6 +56,7 @@ class Runner:
     # Execute the single next instruction in the loaded program
     def execute_next_instruction(self):
         # TODO: Add exception when there is no next instruction
+        # self.execute_immediate(next instruction)
         pass
 
     # Execute the whole program once
