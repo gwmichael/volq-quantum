@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-from quantum_circuit import Circuit
+import volq as v
 
 # For repeating tests, set the max qubits that the tests will repeat up until
 # A higher MAX_QUBITS value means more rigorous testing,
@@ -51,7 +51,7 @@ class TestQuantumCircuit(unittest.TestCase):
     def test_initialise_circuit(self):
         for i in range(1, MAX_QUBITS + 1):
             qubits = i
-            test_circuit = Circuit(qubits)
+            test_circuit = v.Circuit(qubits)
             expected_state = generate_ket_0_state(qubits)
             self.assertTrue(np.array_equal(
                 test_circuit.DEBUG_get_circuit_state(), expected_state),
@@ -62,13 +62,13 @@ class TestQuantumCircuit(unittest.TestCase):
 
     def test_invalid_qubits(self):
         # Test zero
-        self.assertRaises(ValueError, Circuit, 0)
+        self.assertRaises(ValueError, v.Circuit, 0)
         # Test negative
-        self.assertRaises(ValueError, Circuit, -1)
+        self.assertRaises(ValueError, v.Circuit, -1)
         print("test_invalid_qubits: Test passed")
 
     def test_invalid_gates(self):
-        test_circuit = Circuit(2)
+        test_circuit = v.Circuit(2)
         ## Syntactically incorrect operator testing
         # Empty/no gates
         self.assertRaises(ValueError, test_circuit.apply_operator, "")
@@ -97,7 +97,7 @@ class TestQuantumCircuit(unittest.TestCase):
         print("test_invalid_gates: Test passed")
 
     def test_equivalent_cached_operators(self):
-        test_circuit = Circuit(4, operator_cache = True)
+        test_circuit = v.Circuit(4, operator_cache = True)
         # Test ordering
         self.assertFalse(test_circuit.DEBUG_is_operator_cached("H0 H1 H2 H3"),
             msg = "test_equivalent_cached_operators: Test failed at the " +
@@ -156,7 +156,7 @@ class TestQuantumCircuit(unittest.TestCase):
         for gate in SINGLE_QUBIT_GATES:
             for i in range(1, MAX_QUBITS + 1):
                 qubits = i
-                test_circuit = Circuit(qubits)
+                test_circuit = v.Circuit(qubits)
                 zero_state = generate_ket_0_state(qubits)
                 expected_state = zero_state
                 U = SINGLE_QUBIT_GATES[gate]
@@ -178,7 +178,7 @@ class TestQuantumCircuit(unittest.TestCase):
         for gate in SINGLE_QUBIT_GATES:
             for i in range(1, MAX_QUBITS + 1):
                 qubits = i
-                test_circuit = Circuit(qubits)
+                test_circuit = v.Circuit(qubits)
                 expected_state = generate_ket_0_state(qubits)
                 U = np.array([1], dtype = complex)
                 for _ in range(0, i - 1):
@@ -200,7 +200,7 @@ class TestQuantumCircuit(unittest.TestCase):
         for gate in SINGLE_QUBIT_GATES:
             for i in range(1, MAX_QUBITS + 1):
                 qubits = i
-                test_circuit = Circuit(qubits)
+                test_circuit = v.Circuit(qubits)
                 expected_state = generate_ket_0_state(qubits)
                 U = np.array([1], dtype = complex)
                 for _ in range(0, i):
@@ -222,7 +222,7 @@ class TestQuantumCircuit(unittest.TestCase):
     def test_measurement(self):
         for i in range(1, MAX_QUBITS + 1):
             qubits = i
-            test_circuit = Circuit(qubits)
+            test_circuit = v.Circuit(qubits)
             # test_circuit is initialised as |0..0>, check that we measure zero
             expected_state = generate_ket_0_state(qubits)
             test_circuit.measure()
@@ -269,7 +269,7 @@ class TestQuantumCircuit(unittest.TestCase):
             test_passed = False
             reruns = 5
             while reruns != 0:
-                test_circuit = Circuit(qubits, operator_cache = True)
+                test_circuit = v.Circuit(qubits, operator_cache = True)
                 seen_states = set()
                 for _ in range(0, int(samples)):
                     test_circuit.reset_circuit_state()
@@ -300,7 +300,7 @@ class TestQuantumCircuit(unittest.TestCase):
     def test_partial_superposition_measurement(self):
         for i in range(2, MAX_QUBITS + 1):
             qubits = i
-            test_circuit = Circuit(qubits, operator_cache = True)
+            test_circuit = v.Circuit(qubits, operator_cache = True)
             repeats = 10
             accepted_0_state = np.zeros(2 ** qubits, dtype = complex)
             accepted_0_state[0] = 1 + 0j
@@ -318,7 +318,7 @@ class TestQuantumCircuit(unittest.TestCase):
                   f"{i} qubits")
 
     def test_alias_translation(self):
-        test_circuit = Circuit(4, operator_cache = True)
+        test_circuit = v.Circuit(4, operator_cache = True)
 
         # CNOT -> CX
         self.assertFalse(test_circuit.DEBUG_is_operator_cached("CX0,1 I2 I3"),
@@ -350,7 +350,7 @@ class TestQuantumCircuit(unittest.TestCase):
         print("test_alias_translation: Test passed")
 
     def test_cnot_compilation(self):
-        test_circuit = Circuit(2, operator_cache = True)
+        test_circuit = v.Circuit(2, operator_cache = True)
         test_circuit.apply_operator("CNOT1,0")
         test_circuit.apply_operator("CNOT0,1")
         # Check correctness against known correct CNOT matrix
@@ -379,7 +379,7 @@ class TestQuantumCircuit(unittest.TestCase):
     def test_cnot_execution(self):
         for i in range(2, MAX_QUBITS + 1):
             qubits = i
-            test_circuit = Circuit(qubits, operator_cache = True)
+            test_circuit = v.Circuit(qubits, operator_cache = True)
 
             ## Test flipping a target when the control wire is 1
             test_circuit.apply_operator("X0")
@@ -408,7 +408,7 @@ class TestQuantumCircuit(unittest.TestCase):
             outcome_ghz_1 = np.zeros(2 ** qubits, dtype = complex)
             outcome_ghz_1[(2 ** qubits) - 1] = 1 + 0j
             samples = 100
-            test_circuit = Circuit(qubits, operator_cache = True)
+            test_circuit = v.Circuit(qubits, operator_cache = True)
             for _ in range(0, samples):
                 # Reset circuit and apply Hadamard on first wire
                 test_circuit.reset_circuit_state()
@@ -429,7 +429,7 @@ class TestQuantumCircuit(unittest.TestCase):
     def test_generate_bitstring(self):
         for i in range(1, MAX_QUBITS + 1):
             qubits = i
-            test_circuit = Circuit(qubits)
+            test_circuit = v.Circuit(qubits)
             for j in range(2 ** qubits):
                 converted_generated_bitstring = convert_bitstring_to_decimal(
                     test_circuit.generate_bitstring(j))

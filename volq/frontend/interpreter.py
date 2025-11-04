@@ -1,5 +1,5 @@
-from quantum_circuit import Circuit
-from instructions import Opcode, Instruction
+import volq.backend as v
+from .instructions import Opcode, Instruction
 import sys
 
 class Interpreter:
@@ -69,7 +69,7 @@ class Interpreter:
                 case Opcode.RUNS:
                     self._runs = instruction.operand
                 case Opcode.INIT:
-                    self._circuit = Circuit(self._qubits)
+                    self._circuit = v.Circuit(self._qubits)
                 case Opcode.APPLY:
                     execution_substack.append(instruction)
                 case Opcode.MEASURE:
