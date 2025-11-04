@@ -1,5 +1,6 @@
 import volq.backend as v
 from .instructions import Opcode, Instruction
+from .quantum_circuit_runner import Runner
 import sys
 
 class Interpreter:
@@ -11,7 +12,7 @@ class Interpreter:
         direct_execution_mode = False
         file_execution_mode = False
         self.arguments = sys.argv[1:]
-        self._execution_stack = []
+        self._execution_stack = Runner() # TODO: There is no quantum circuit auto-initialised in Runner, so to amend interpreter to initialise it intentionally
         self._circuit = None
         self._circuit_init = False
         self._qubits = None
@@ -55,7 +56,7 @@ class Interpreter:
                 case "SHOW":
                     instruction = Instruction(Opcode.SHOW, line_tokens[1])
                 case _:
-                    print(f"Fatal error: {line_tokens[0]} is not a valid opcode")
+                    print(f"Syntax error: {line_tokens[0]} is not a valid opcode, exiting")
                     quit()
 
             self._execution_stack.append(instruction)

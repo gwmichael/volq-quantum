@@ -43,7 +43,7 @@ class Runner:
     def reload_program(self):
         self._program_minor_queue = self._program_major_queue
 
-    def reset_program(self):
+    def clear_program(self):
         self._program_major_queue = []
         self._program_minor_queue = []
 
@@ -52,6 +52,7 @@ class Runner:
 
     # Execute the single next instruction in the loaded program
     def execute_next_instruction(self):
+        # TODO: Add exception when there is no next instruction
         pass
 
     # Execute the whole program once
@@ -61,13 +62,13 @@ class Runner:
     # Execute the whole program {self._runs} times
     def execute_all_runs(self):
         pass
-        #return self.get_chart()
+        #return self.get_results_histogram()
 
     # Maybe a function that just directly takes an instruction & executes it (for live mode?)
-    def execute_direct_instruction(self, instruction: Instruction):
+    def execute_immediate(self, instruction: Instruction):
         pass        
 
-    def get_chart(self):
+    def get_results_histogram(self):
         pass
 
     def get_results(self):
