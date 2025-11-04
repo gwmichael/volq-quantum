@@ -4,8 +4,8 @@ from .instructions import Opcode, Instruction
 class Runner:
     
     def __init__(self):
-        self._program_major_queue = []
-        self._program_minor_queue = []
+        self._program = []
+        self._instruction_pointer = 0
         # Live mode: Execute instructions immediately as they're loaded, only use the major queue
         self._live_mode = False
         self._circuit = None
@@ -34,7 +34,7 @@ class Runner:
         return self._runs
     
     def get_program(self):
-        return self._program_major_queue
+        return self._program
 
     def init_circuit(self):
         self._circuit = v.Circuit(self._qubits)
@@ -45,14 +45,13 @@ class Runner:
         self.reload_program()
 
     def reload_program(self):
-        self._program_minor_queue = self._program_major_queue
+        self._instruction_pointer = 0
 
     def clear_program(self):
-        self._program_major_queue = []
-        self._program_minor_queue = []
+        self._program = []
 
     def load_instruction(self, instruction: Instruction):
-        self._instruction_queue.append(instruction)
+        self._program.append(instruction)
 
     # Execute the single next instruction in the loaded program
     def execute_next_instruction(self):
@@ -81,6 +80,7 @@ class Runner:
                 self._runs = instruction.operand
             case Opcode.INIT:
                 self.init_circuit()
+
             case Opcode.APPLY:
                 self._circuit.apply_operator(instruction.operand)
             case Opcode.MEASURE:
@@ -90,7 +90,8 @@ class Runner:
                 pass
             case Opcode.SHOW:
                 # TODO Implement show state, histogram, program, config
-                self._show_style = instruction.operand
+                pass
+        self._instruction_pointer += 1
 
     def get_results_histogram(self):
         pass
