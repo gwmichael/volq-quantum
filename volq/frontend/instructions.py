@@ -7,6 +7,7 @@ class Opcode(enum.Enum):
     APPLY = "APPLY"
     MEASURE = "MEASURE"
     SHOW = "SHOW"
+    NOP = "NOP"
 
 
 class Instruction():

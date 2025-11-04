@@ -42,6 +42,8 @@ class Interpreter:
                     continue
                 case "":
                     continue
+                case "NOP":
+                    instruction = Instruction(Opcode.NOP)
                 case "QUBITS":
                     instruction = Instruction(Opcode.QUBITS, int(line_tokens[1]))
                 case "RUNS":
@@ -75,6 +77,8 @@ class Interpreter:
                     execution_substack.append(instruction)
                 case Opcode.MEASURE:
                     execution_substack.append(instruction)
+                case Opcode.NOP:
+                    execution_substack.append(instruction)
                 case Opcode.SHOW:
                     self._show_style = instruction.operand
         
@@ -88,6 +92,8 @@ class Interpreter:
                         self._circuit.apply_operator(instruction.operand)
                     case Opcode.MEASURE:
                         self._circuit.measure()
+                    case Opcode.NOP:
+                        pass
             
             results.append(self._circuit.DEBUG_get_circuit_state())
 
