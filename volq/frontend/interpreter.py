@@ -1,5 +1,5 @@
-from .instructions import Opcode, Instruction
-from .runtime import Runtime
+from volq.runtime.instructions import Opcode, Instruction
+from volq.runtime.runtime import Runtime
 import sys
 
 class Interpreter:
