@@ -30,7 +30,7 @@ class Interpreter:
         # Parse the program into a stack
         for line in program:
             instruction = None
-            line_tokens = line.split(" ") # TODO: There is a bug such that only the first gate is ever applied
+            line_tokens = line.split(" ", 1)
             match line_tokens[0]:
                 case "\n":
                     continue
