@@ -1,4 +1,3 @@
-import volq.backend as v
 from .instructions import Opcode, Instruction
 from .runtime import Runtime
 import sys
@@ -12,12 +11,7 @@ class Interpreter:
         direct_execution_mode = False
         file_execution_mode = False
         self.arguments = sys.argv[1:]
-        self._execution_stack = Runtime() # TODO: There is no quantum circuit auto-initialised in Runner, so to amend interpreter to initialise it intentionally
-        self._circuit = None
-        self._circuit_init = False
-        self._qubits = None
-        self._runs = 1
-        self._show_style = None
+        self.runtime = Runtime()
         
         # Start main interpreter loop
         self.main()
@@ -36,7 +30,7 @@ class Interpreter:
         # Parse the program into a stack
         for line in program:
             instruction = None
-            line_tokens = line.split(" ")
+            line_tokens = line.split(" ") # TODO: There is a bug such that only the first gate is ever applied
             match line_tokens[0]:
                 case "\n":
                     continue
@@ -61,46 +55,12 @@ class Interpreter:
                     print(f"Syntax error: {line_tokens[0]} is not a valid opcode, exiting")
                     quit()
 
-            self._execution_stack.append(instruction)
+            self.runtime.load_instruction(instruction)
 
         # Execute the program
-        execution_substack = []
-        for instruction in self._execution_stack:
-            match instruction.opcode:
-                case Opcode.QUBITS:
-                    self._qubits = instruction.operand
-                case Opcode.RUNS:
-                    self._runs = instruction.operand
-                case Opcode.INIT:
-                    self._circuit = v.Circuit(self._qubits)
-                case Opcode.APPLY:
-                    execution_substack.append(instruction)
-                case Opcode.MEASURE:
-                    execution_substack.append(instruction)
-                case Opcode.NOP:
-                    execution_substack.append(instruction)
-                case Opcode.SHOW:
-                    self._show_style = instruction.operand
-        
-        results = []
+        self.runtime.execute_all_runs()
 
-        for i in range(0, self._runs):
-            self._circuit.reset_circuit_state()
-            for instruction in execution_substack:
-                match instruction.opcode:
-                    case Opcode.APPLY:
-                        self._circuit.apply_operator(instruction.operand)
-                    case Opcode.MEASURE:
-                        self._circuit.measure()
-                    case Opcode.NOP:
-                        pass
-            
-            results.append(self._circuit.DEBUG_get_circuit_state())
-
-        # Show style not yet implemented, just print for now
-        print(results)
-
-        
+        print(self.runtime.get_results())
 
 if __name__ == "__main__":
     Interpreter()
