@@ -8,8 +8,6 @@ class Interpreter:
 
     def __init__(self):
         # Read program in
-        direct_execution_mode = False
-        file_execution_mode = False
         self.arguments = sys.argv[1:]
         self.runtime = Runtime()
         
@@ -19,10 +17,8 @@ class Interpreter:
 
     def main(self):
         if (self.arguments[0] == self.DIRECT_EXECUTE_ARGUMENT):
-            self.direct_execution_mode = True
             program = self.arguments[1].split("\n")
         else:
-            self.file_execution_mode = True
             with open(self.arguments[0], "r") as file:
                 contents = file.read()
             program = contents.split("\n")
