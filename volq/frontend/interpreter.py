@@ -7,6 +7,7 @@ class Interpreter:
     DIRECT_EXECUTE_ARGUMENT = "-e"
 
     def __init__(self):
+        print(">> Volq-quantum v0.3.0-alpha\n>> Author: gwmichael / Michael Goodwin")
         # Read program in
         self.arguments = sys.argv[1:]
         self.runtime = Runtime()
