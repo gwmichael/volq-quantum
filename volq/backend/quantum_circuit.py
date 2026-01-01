@@ -12,6 +12,7 @@ class Circuit:
             DEBUG_syntax_validation: bool = True,
             output_rounding_dp = 5
         ):
+
         if qubits < 1:
             raise ValueError(
                 "Qubits parameter must be at least 1, got " + str(qubits))
@@ -40,7 +41,7 @@ class Circuit:
 
         # Load parser and compiler
         self._parser = Parser(self._qubits, DEBUG_syntax_validation)
-        self._compiler = Compiler()
+        self._compiler = Compiler(operator_cache)
 
         # Gates
         self.IDENTITY = np.array([[1,0],[0,1]], dtype = complex)
@@ -88,7 +89,10 @@ class Circuit:
         if normalised_key in self._operator_cache:
             U = self._operator_cache[normalised_key]
         else:
-            U = self.compile_operator(normalised_key)
+            U = self._compiler.compile_operator(normalised_key)
+            # If operator cache is enabled, then add compiled operator
+            if self._operator_cache_state:
+                self._operator_cache[normalised_key] = U
         self._circuit_state = np.dot(U, self._circuit_state)
 
 
