@@ -42,34 +42,6 @@ class Circuit:
         self._parser = Parser(self._qubits, DEBUG_syntax_validation)
         self._compiler = Compiler()
 
-        # Gates
-        self.IDENTITY = np.array([[1,0],[0,1]], dtype = complex)
-        self.PAULI_X = np.array([[0,1],[1,0]], dtype = complex)
-        self.PAULI_Y = np.array([[0,-1j],[1j,0]], dtype = complex)
-        self.PAULI_Z = np.array([[1,0],[0,-1]], dtype = complex)
-        self.HADAMARD = (1 / np.sqrt(2)) * np.array([[1, 1], [1, -1]],
-                                                    dtype = complex)
-
-        self.KET_0 = np.array([1,0], dtype = complex)             # |0⟩
-        self.KET_1 = np.array([0,1], dtype = complex)             # |1⟩
-        self.KETBRA_00 = np.outer(self.KET_0, self.KET_0.conj())  # |0⟩⟨0|
-        self.KETBRA_11 = np.outer(self.KET_1, self.KET_1.conj())  # |1⟩⟨1|
-
-        # Map strings to gates
-        self.SINGLE_QUBIT_GATES = {
-            "I": self.IDENTITY,
-            "X": self.PAULI_X,
-            "Y": self.PAULI_Y,
-            "Z": self.PAULI_Z,
-            "H": self.HADAMARD
-        }
-
-        self.ALIASES = {
-            "NOT" : "X",
-            "TOFFOLI" : "CCX",
-            "TOFF" : "CCX"
-        }
-
 
     def reset_circuit_state(self):
         np = self.np
