@@ -1,5 +1,6 @@
 import re
 import numpy as np  # Note to self for later: May conflict with cupy, implement class-level np passthrough?
+from .single_qubit_gates import Gate as single_qubit_gates
 
 class Parser:
     
@@ -37,7 +38,7 @@ class Parser:
             "Z": self.PAULI_Z,
             "H": self.HADAMARD
         }
-
+        
         self.ALIASES = {
             "NOT" : "X",
             "TOFFOLI" : "CCX",
@@ -152,7 +153,7 @@ class Parser:
                 operator_cursor += 1
             # Then check gate
             gate = token[operator_cursor]
-            if gate not in self.SINGLE_QUBIT_GATES:
+            if gate not in single_qubit_gates:
                 raise ValueError(f"Invalid gate provided: Received {token}, " +
                     "{gate} cannot be resolved to a valid gate")
 
