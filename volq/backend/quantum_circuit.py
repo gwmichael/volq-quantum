@@ -1,6 +1,6 @@
 import re
-from .qc_v1_parser import Parser
-from .qc_v1_compiler import Compiler
+from .parser import Parser
+from .compiler import Compiler
 
 class Circuit:
 
