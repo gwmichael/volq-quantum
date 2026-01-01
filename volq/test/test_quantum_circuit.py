@@ -295,7 +295,7 @@ class TestQuantumCircuit(unittest.TestCase):
                 f"threshold of {coverage_threshold} has been passed too " +
                  "many times")
             print(f"test_random_measurement_sampling: Test passed with {i} " +
-                  f"qubits and {coverage}% coverage")
+                  f"qubits and {coverage * 100}% coverage")
 
     def test_partial_superposition_measurement(self):
         for i in range(2, MAX_QUBITS + 1):
