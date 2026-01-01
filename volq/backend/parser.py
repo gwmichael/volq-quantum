@@ -10,7 +10,10 @@ class Parser:
         ):
 
         self._qubits = qubits
-        
+
+        # WARNING: This option is intended for testing new syntax before
+        #          validation is implemented.
+        #          Disabling this creates a risk of infinite loops or crashes!
         self.DEBUG_syntax_validation = DEBUG_syntax_validation
 
         # Gates

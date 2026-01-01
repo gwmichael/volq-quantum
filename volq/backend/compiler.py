@@ -3,10 +3,7 @@ import numpy as np
 
 class Compiler:
 
-    def __init__(
-            self,
-            operator_cache: bool = False
-            ):
+    def __init__(self):
         
         self.np = np
 
