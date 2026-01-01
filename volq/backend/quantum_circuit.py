@@ -1,4 +1,6 @@
 import re
+from .qc_v1_parser import Parser
+from .qc_v1_compiler import Compiler
 
 class Circuit:
 
@@ -36,6 +38,10 @@ class Circuit:
         self._operator_cache = {}
         self._output_rounding_dp = output_rounding_dp
 
+        # Load parser and compiler
+        self._parser = Parser(self._qubits, DEBUG_syntax_validation)
+        self._compiler = Compiler()
+
         # Gates
         self.IDENTITY = np.array([[1,0],[0,1]], dtype = complex)
         self.PAULI_X = np.array([[0,1],[1,0]], dtype = complex)
@@ -67,7 +73,6 @@ class Circuit:
         # WARNING: This option is intended for testing new syntax before
         #          validation is implemented.
         #          Disabling this creates a risk of infinite loops or crashes!
-        self.DEBUG_syntax_validation = DEBUG_syntax_validation
 
 
     def reset_circuit_state(self):
@@ -79,7 +84,7 @@ class Circuit:
 
     def apply_operator(self, key):
         np = self.np
-        normalised_key = self.normalise_key(key)
+        normalised_key = self._parser.normalise_key(key)
         if normalised_key in self._operator_cache:
             U = self._operator_cache[normalised_key]
         else:
