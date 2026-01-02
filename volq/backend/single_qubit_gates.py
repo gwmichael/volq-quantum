@@ -15,6 +15,6 @@ class Gate(enum.Enum):
     X = "X"  # Pauli X
     Y = "Y"  # Pauli Y
     Z = "Z"  # Pauli Z
-    
+
     def matrix(self):
         return _GATE_TO_MATRIX[self.value]

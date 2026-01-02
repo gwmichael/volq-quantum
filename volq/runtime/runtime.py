@@ -2,7 +2,7 @@ import volq.backend as v
 from .instructions import Opcode, Instruction
 
 class Runtime:
-    
+
     def __init__(self):
         self._program = []
         self._instruction_pointer = 0
@@ -22,19 +22,19 @@ class Runtime:
         if (self._circuit == None):
             self._qubits = qubits
         else:
-            # TODO: Throw exception that circuit is already initialised, 
+            # TODO: Throw exception that circuit is already initialised,
             # therefore qubits can't be changed
             pass
-    
+
     def get_qubits(self):
         return self._qubits
-    
+
     def set_runs(self, runs):
         self._runs = runs
 
     def get_runs(self):
         return self._runs
-    
+
     def get_program(self):
         return self._program
 

@@ -11,7 +11,7 @@ class Interpreter:
         # Read program in
         self.arguments = sys.argv[1:]
         self.runtime = Runtime()
-        
+
         # Start main interpreter loop
         self.main()
 
@@ -23,7 +23,7 @@ class Interpreter:
             with open(self.arguments[0], "r") as file:
                 contents = file.read()
             program = contents.split("\n")
-        
+
         # Parse the program into a stack
         for line in program:
             instruction = None

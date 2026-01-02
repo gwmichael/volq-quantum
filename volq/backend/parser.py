@@ -2,7 +2,7 @@ import re
 from .single_qubit_gates import Gate as single_qubit_gates
 
 class Parser:
-    
+
     def __init__(
             self,
             qubits: int,
@@ -21,8 +21,8 @@ class Parser:
             "TOFFOLI" : "CCX",
             "TOFF" : "CCX"
         }
-    
-    
+
+
     def normalise_key(self, operator_key):
 
         operator_key = self.translate_aliases(operator_key)
@@ -105,8 +105,8 @@ class Parser:
             new_ok = new_ok.replace(alias, resolution)
 
         return new_ok
-    
-    
+
+
     def check_legal_syntax(self, operator_key):
         # This is quite a rudimentary way of checking the syntax
         #

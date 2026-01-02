@@ -6,9 +6,9 @@ from .quantum_primitives import Projector
 class Compiler:
 
     def __init__(self):
-        
+
         self.np = np
-    
+
 
     def compile_operator(self, operator_key):
         np = self.np
@@ -22,7 +22,7 @@ class Compiler:
         # Construct U by tensoring gates together into one matrix
         for gate in operator_construction:
             operator_U = np.kron(operator_U, gate)
-        
+
         return operator_U
 
 
