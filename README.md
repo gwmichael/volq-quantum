@@ -30,8 +30,8 @@ You can also execute all of Volq's testing code with:
 ```bash
 python3 -m unittest volq.test
 ```
-## Example Program
-Below is an example program, which runs the Deutsch-Jozsa algorithm on a 9 qubit circuit, using a balanced function with an 8-bit domain as input.
+## Example Program in Volq
+Below is an example Volq program, which runs the Deutsch-Jozsa algorithm on a 9 qubit circuit, using a balanced function with an 8-bit domain as input.
 ```
 QUBITS 9
 RUNS 1000
@@ -52,7 +52,7 @@ MEASURE ALL
 ```
 We only need to pay attention to the first 8 qubits of the output, as the 9th qubit is the ancilla qubit of the oracle and can be discarded.
 
-This gives us the output space below, indicating that this function is indeed balanced, since P(|00000000⟩⊗|ψ⟩) = 0, where |ψ⟩ is the ancilla. 
+In the output space below, we can see that P(|00000000⟩⊗|ψ⟩) = 0, where |ψ⟩ is the ancilla, indicating that this function is indeed balanced. 
 ```
 >> Volq-quantum v0.4.0-alpha
 >> Author: michaelchips / Michael Goodwin
