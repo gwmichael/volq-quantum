@@ -1,32 +1,17 @@
 import re
 import numpy as np
+from .single_qubit_gates import Gate
 
 class Compiler:
 
     def __init__(self):
         
         self.np = np
-
-        self.IDENTITY = np.array([[1,0],[0,1]], dtype = complex)
-        self.PAULI_X = np.array([[0,1],[1,0]], dtype = complex)
-        self.PAULI_Y = np.array([[0,-1j],[1j,0]], dtype = complex)
-        self.PAULI_Z = np.array([[1,0],[0,-1]], dtype = complex)
-        self.HADAMARD = (1 / np.sqrt(2)) * np.array([[1, 1], [1, -1]],
-                                                    dtype = complex)
         
         self.KET_0 = np.array([1,0], dtype = complex)             # |0⟩
         self.KET_1 = np.array([0,1], dtype = complex)             # |1⟩
         self.KETBRA_00 = np.outer(self.KET_0, self.KET_0.conj())  # |0⟩⟨0|
         self.KETBRA_11 = np.outer(self.KET_1, self.KET_1.conj())  # |1⟩⟨1|
-
-        # Map strings to gates
-        self.SINGLE_QUBIT_GATES = {
-            "I": self.IDENTITY,
-            "X": self.PAULI_X,
-            "Y": self.PAULI_Y,
-            "Z": self.PAULI_Z,
-            "H": self.HADAMARD
-        }
     
 
     def compile_operator(self, operator_key):
@@ -53,7 +38,7 @@ class Compiler:
             if token[0] == "C":
                 gates.append(self.compile_controlled_gate(token))
             else:
-                gates.append(self.SINGLE_QUBIT_GATES[token[0]])
+                gates.append(Gate[token[0]].matrix())
 
         return gates
 
@@ -104,7 +89,7 @@ class Compiler:
         while gate_structure[i][0] == "C":
             i += 1
         target_gate_index = i
-        U = self.SINGLE_QUBIT_GATES[gate_structure[target_gate_index][0]]
+        U = Gate[gate_structure[target_gate_index][0]].matrix()
 
         ## Tensor matrices together to compile an operator
         # Compile control wires on the left side of the target wire
