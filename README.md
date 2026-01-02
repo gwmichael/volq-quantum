@@ -11,7 +11,7 @@ This project is 100% coded in Python with NumPy.
 
 > Important note: This project does not aim to solve classically difficult problems at quantum running times on a classical computer. Instead, it aims to prove mathematically that quantum algorithms do indeed find correct solutions through quantum mechanics (i.e. lots of linear algebra!).
 
-This project is currently in the **alpha** stage. The DSL syntax and backend API will change over time.
+This project is currently in the **alpha** stage. The DSL syntax and backend API **will** change over time.
 ## Getting Started
 Volq requires Python and NumPy to run. You can check these are installed with the following:
 ```bash
@@ -52,7 +52,7 @@ MEASURE ALL
 ```
 We only need to pay attention to the first 8 qubits of the output, as the 9th qubit is the ancilla qubit of the oracle and can be discarded.
 
-This gives us the output below, indicating that we used a balanced function, since P(|00000000⟩⊗|ψ⟩) = 0, where |ψ⟩ is the ancilla. 
+This gives us the output space below, indicating that this function is indeed balanced, since P(|00000000⟩⊗|ψ⟩) = 0, where |ψ⟩ is the ancilla. 
 ```
 >> Volq-quantum v0.4.0-alpha
 >> Author: michaelchips / Michael Goodwin
