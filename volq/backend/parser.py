@@ -1,5 +1,4 @@
 import re
-import numpy as np  # Note to self for later: May conflict with cupy, implement class-level np passthrough?
 from .single_qubit_gates import Gate as single_qubit_gates
 
 class Parser:
