@@ -1,14 +1,7 @@
 import enum
 import numpy as np
 
-class Gate(enum.Enum):
-    I = "I"  # Identity
-    H = "H"  # Hadamard
-    X = "X"  # Pauli X
-    Y = "Y"  # Pauli Y
-    Z = "Z"  # Pauli Z
-
-    _GATE_TO_MATRIX = {
+_GATE_TO_MATRIX = {
         "I": np.array([[1,0],[0,1]], dtype = complex),
         "H": (1 / np.sqrt(2)) * np.array([[1, 1], [1, -1]], dtype = complex),
         "X": np.array([[0,1],[1,0]], dtype = complex),
@@ -16,5 +9,12 @@ class Gate(enum.Enum):
         "Z": np.array([[1,0],[0,-1]], dtype = complex)
     }
 
+class Gate(enum.Enum):
+    I = "I"  # Identity
+    H = "H"  # Hadamard
+    X = "X"  # Pauli X
+    Y = "Y"  # Pauli Y
+    Z = "Z"  # Pauli Z
+    
     def matrix(self):
-        return self._GATE_TO_MATRIX[self.value]
+        return _GATE_TO_MATRIX[self.value]
