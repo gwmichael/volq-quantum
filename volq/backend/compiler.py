@@ -1,17 +1,13 @@
 import re
 import numpy as np
 from .single_qubit_gates import Gate
+from .quantum_primitives import Projector
 
 class Compiler:
 
     def __init__(self):
         
         self.np = np
-        
-        self.KET_0 = np.array([1,0], dtype = complex)             # |0⟩
-        self.KET_1 = np.array([0,1], dtype = complex)             # |1⟩
-        self.KETBRA_00 = np.outer(self.KET_0, self.KET_0.conj())  # |0⟩⟨0|
-        self.KETBRA_11 = np.outer(self.KET_1, self.KET_1.conj())  # |1⟩⟨1|
     
 
     def compile_operator(self, operator_key):
@@ -98,12 +94,12 @@ class Compiler:
             index_difference = gate_structure[operation_cursor][1] - gate_structure[i][1]  # pylint: disable=line-too-long
             U_0 = np.kron(
                 np.kron(
-                    self.KETBRA_00,
+                    Projector("|0⟩⟨0|").matrix(),
                     np.eye(2 ** (index_difference - 1))),
                 np.eye(U.shape[0]))
             U_1 = np.kron(
                 np.kron(
-                    self.KETBRA_11,
+                    Projector("|1⟩⟨1|").matrix(),
                     np.eye(2 ** (index_difference - 1))),
                 U)
             U = U_0 + U_1
@@ -117,12 +113,12 @@ class Compiler:
                 np.kron(
                     np.eye(U.shape[0]),
                     np.eye(2 ** (index_difference - 1))),
-                self.KETBRA_00)
+                Projector("|0⟩⟨0|").matrix())
             U_1 = np.kron(
                 np.kron(
                     U,
                     np.eye(2 ** (index_difference - 1))),
-                self.KETBRA_11)
+                Projector("|1⟩⟨1|").matrix())
             U = U_0 + U_1
             operation_cursor += 1
 
