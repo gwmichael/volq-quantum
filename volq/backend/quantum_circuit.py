@@ -1,5 +1,6 @@
 from .parser import Parser
 from .compiler import Compiler
+from .context import Context
 
 class Circuit:
 
@@ -29,9 +30,18 @@ class Circuit:
             suppress = True
         )
 
-        # Setup basis vector of qubit states
+        # Create a Context object for sharing circuit information between other classes
+        self._context = Context(qubits, operator_cache, hardware_mode, DEBUG_syntax_validation)
+        
+        # The number of qubits is soft-immutable once set. For high performance, there
+        # is a copy of # of qubits stored both in this class and in Context.
+        # If this ever becomes mutable in the future somehow, note to self to update
+        # both classes.
         self._qubits = qubits
+
+        # Setup basis vector of qubit states
         self._circuit_state = np.zeros(2 ** self._qubits, dtype = complex)
+
         # Set circuit state to |00...0⟩
         self._circuit_state[0] = 1
         self._operator_cache_state = operator_cache
