@@ -26,9 +26,13 @@ Change directory into the cloned repository folder, then you can start running V
 ```bash
 python3 -m volq.frontend.interpreter YOURPROGRAMFILENAMEHERE
 ```
-You can also execute all of Volq's testing code with:
+You can execute all of Volq's testing code with:
 ```bash
 python3 -m unittest volq.test
+```
+You can also check how well Volq adheres to Google's Python code standard using:
+```
+python3 -m pylint volq
 ```
 ## Example Program in Volq
 Below is an example Volq program, which runs the Deutsch-Jozsa algorithm on a 9 qubit circuit, using a balanced function with an 8-bit domain as input.
