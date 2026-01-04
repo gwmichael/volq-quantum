@@ -32,15 +32,21 @@ class Circuit:
             precision = 15,
             suppress = True
         )
-        
 
-        # Create a Context object for sharing circuit information between other classes
-        self._context = Context(qubits, operator_cache, hardware_mode, DEBUG_syntax_validation)
-        
-        # The number of qubits is soft-immutable once set. For high performance, there
-        # is a copy of # of qubits stored both in this class and in Context.
-        # If this ever becomes mutable in the future somehow, note to self to update
-        # both classes.
+        # Create a Context object for sharing circuit information between other
+        # classes
+        self._context = Context(
+            qubits,
+            operator_cache,
+            hardware_mode,
+            DEBUG_syntax_validation
+        )
+
+        # The number of qubits is soft-immutable once set. For high performance,
+        # there is a copy of # of qubits stored both in this class and in
+        # Context.
+        # If this ever becomes mutable in the future somehow, note to self to
+        # update both classes.
         self._qubits = qubits
 
         # Setup basis vector of qubit states
@@ -71,7 +77,8 @@ class Circuit:
         if self._context.operator_cache_enabled():
             # Cache enabled, so attempt to load operator from cache
             U = self._context.load_cached_operator(normalised_key)
-            # If U isn't cached, then it will be None, otherwise it'll be anything else
+            # If U isn't cached, then it will be None, otherwise it'll be
+            # anything else
             if U is None:
                 U = self._compiler.compile_operator(normalised_key)
                 self._context.add_operator_to_cache(normalised_key, U)

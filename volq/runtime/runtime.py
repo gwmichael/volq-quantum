@@ -7,7 +7,10 @@ class Runtime:
         self._program = []
         self._instruction_pointer = 0
         self._marked_instruction_pointer = None
-        # Live mode: Execute instructions immediately as they're loaded, only use the major queue
+        # Live mode: Execute instructions immediately as they're loaded,
+        # only use the major queue
+        # 04-Jan-2025: Is live mode still needed if a live frontend can
+        # just call execute_immediate()?
         self._live_mode = False
         self._circuit = None
         self._circuit_initialised = False
@@ -15,7 +18,8 @@ class Runtime:
         self._runs = 1
         self._iteration = 1
         self._show_style = None # TODO Implement showing multiple string styles
-        # Results will be stored as a hashmap, so that a histogram can be generated using matplotlib
+        # Results will be stored as a hashmap, so that a histogram can be
+        # generated using matplotlib
         self._results = {}
 
     def set_qubits(self, qubits):
@@ -98,7 +102,8 @@ class Runtime:
             case Opcode.APPLY:
                 self._circuit.apply_operator(instruction.operand)
             case Opcode.MEASURE:
-                # TODO Implement partial measure in quantum_circuit, then add more detailed operand logic here
+                # TODO Implement partial measure in quantum_circuit, then add
+                # more detailed operand logic here
                 self._circuit.measure()
             case Opcode.NOP:
                 pass

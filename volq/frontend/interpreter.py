@@ -7,7 +7,8 @@ class Interpreter:
     DIRECT_EXECUTE_ARGUMENT = "-e"
 
     def __init__(self):
-        print(">> Volq-quantum v0.4.0-alpha\n>> Author: michaelchips / Michael Goodwin")
+        print(">> Volq-quantum v0.4.0-alpha\n" +
+              ">> Author: michaelchips / Michael Goodwin")
         # Read program in
         self.arguments = sys.argv[1:]
         self.runtime = Runtime()
@@ -34,22 +35,43 @@ class Interpreter:
                 case "":
                     continue
                 case "NOP":
-                    instruction = Instruction(Opcode.NOP)
+                    instruction = Instruction(
+                        Opcode.NOP
+                        )
                 case "QUBITS":
-                    instruction = Instruction(Opcode.QUBITS, int(line_tokens[1]))
+                    instruction = Instruction(
+                        Opcode.QUBITS,
+                        int(line_tokens[1])
+                        )
                 case "RUNS":
-                    instruction = Instruction(Opcode.RUNS, int(line_tokens[1]))
+                    instruction = Instruction(
+                        Opcode.RUNS,
+                        int(line_tokens[1])
+                        )
                 case "INIT":
-                    instruction = Instruction(Opcode.INIT)
+                    instruction = Instruction(
+                        Opcode.INIT
+                        )
                 case "APPLY":
-                    # Backend circuit class handles all the parsing, so just pass the whole string as operand
-                    instruction = Instruction(Opcode.APPLY, line_tokens[1])
+                    # Backend circuit class handles all the parsing
+                    # so just pass the whole string as operand
+                    instruction = Instruction(
+                        Opcode.APPLY,
+                        line_tokens[1]
+                        )
                 case "MEASURE":
-                    instruction = Instruction(Opcode.MEASURE, line_tokens[1])
+                    instruction = Instruction(
+                        Opcode.MEASURE,
+                        line_tokens[1]
+                        )
                 case "SHOW":
-                    instruction = Instruction(Opcode.SHOW, line_tokens[1])
+                    instruction = Instruction(
+                        Opcode.SHOW,
+                        line_tokens[1]
+                        )
                 case _:
-                    print(f"Syntax error: {line_tokens[0]} is not a valid opcode, exiting")
+                    print(f"Syntax error: {line_tokens[0]} is not a valid " +
+                          "opcode, exiting")
                     quit()
 
             self.runtime.load_instruction(instruction)

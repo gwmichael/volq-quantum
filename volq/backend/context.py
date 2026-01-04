@@ -7,7 +7,7 @@ class Context:
             hardware_mode,
             syntax_validation
         ):
-        
+
         self._qubits = qubits # Qubits has no setter by design
         self._operator_cache_enabled = operator_cache
         self._operator_cache = {}
@@ -21,7 +21,7 @@ class Context:
 
     def get_qubits(self):
         return self._qubits
-    
+
 
     def operator_cache_enabled(self):
         return self._operator_cache_enabled
@@ -40,12 +40,13 @@ class Context:
         if (self._operator_cache_enabled == False):
             return None
         else:
-            return self._operator_cache[key] if key in self._operator_cache else None
-    
+            return self._operator_cache[key] if key in \
+                self._operator_cache else None
+
 
     def hardware_mode(self):
         return self._hardware_mode
-    
+
 
     def syntax_validation_enabled(self):
         return self._syntax_validation_enabled
