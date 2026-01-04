@@ -10,7 +10,8 @@ class Circuit:
             operator_cache: bool = False,
             hardware_mode: str = "CPU",
             DEBUG_syntax_validation: bool = True,
-            output_rounding_dp = 5
+            output_rounding_dp = 5,
+            test_mode: bool = False
         ):
 
         if qubits < 1:
@@ -44,6 +45,9 @@ class Circuit:
         self._circuit_state[0] = 1  # Set circuit state to |00...0⟩
 
         self._output_rounding_dp = output_rounding_dp
+
+        # Set test mode
+        self._test_mode = test_mode
 
         # Load parser and compiler
         self._parser = Parser(self._context)
@@ -170,11 +174,5 @@ class Circuit:
         return bitstring
 
 
-    def DEBUG_get_circuit_state(self):
+    def get_circuit_state(self):
         return self._circuit_state
-
-
-    # TODO: Rewrite unit testing to communicate with context directly
-    # This is a temporary workaround
-    def DEBUG_is_operator_cached(self, operator_key):
-        return operator_key in self._context._operator_cache

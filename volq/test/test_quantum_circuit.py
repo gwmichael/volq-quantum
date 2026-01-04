@@ -54,10 +54,10 @@ class TestQuantumCircuit(unittest.TestCase):
             test_circuit = v.Circuit(qubits)
             expected_state = generate_ket_0_state(qubits)
             self.assertTrue(np.array_equal(
-                test_circuit.DEBUG_get_circuit_state(), expected_state),
+                test_circuit.get_circuit_state(), expected_state),
                 msg = f"test_initialise_circuit: Test failed with {i} qubits;" +
                       f"\nExpected: {expected_state}" +
-                      f"\nActual: {test_circuit.DEBUG_get_circuit_state()}")
+                      f"\nActual: {test_circuit.get_circuit_state()}")
 
     def test_invalid_qubits(self):
         # Test zero
@@ -95,50 +95,50 @@ class TestQuantumCircuit(unittest.TestCase):
     def test_equivalent_cached_operators(self):
         test_circuit = v.Circuit(4, operator_cache = True)
         # Test ordering
-        self.assertFalse(test_circuit.DEBUG_is_operator_cached("H0 H1 H2 H3"),
+        self.assertFalse("H0 H1 H2 H3" in test_circuit._context._operator_cache,
             msg = "test_equivalent_cached_operators: Test failed at the " +
                   "ordering subtest, assertFalse received True")
         test_circuit.apply_operator("H3 H1 H2 H0")
-        self.assertTrue(test_circuit.DEBUG_is_operator_cached("H0 H1 H2 H3"),
+        self.assertTrue("H0 H1 H2 H3" in test_circuit._context._operator_cache,
             msg = "test_equivalent_cached_operators: Test failed at the " +
                   "ordering subtest, assertTrue received False")
 
-        # Test front padding
-        self.assertFalse(test_circuit.DEBUG_is_operator_cached("I0 H1 H2 H3"),
+        # Test prepending padding
+        self.assertFalse("I0 H1 H2 H3" in test_circuit._context._operator_cache,
             msg = "test_equivalent_cached_operators: Test failed at the " +
                   "front padding subtest, assertFalse received True")
         test_circuit.apply_operator("H1 H2 H3")
-        self.assertTrue(test_circuit.DEBUG_is_operator_cached("I0 H1 H2 H3"),
+        self.assertTrue("I0 H1 H2 H3" in test_circuit._context._operator_cache,
             msg = "test_equivalent_cached_operators: Test failed at the " +
                   "front padding subtest, assertTrue received False")
 
-        # Test end padding
-        self.assertFalse(test_circuit.DEBUG_is_operator_cached("H0 I1 I2 I3"),
+        # Test appending padding
+        self.assertFalse("H0 I1 I2 I3" in test_circuit._context._operator_cache,
             msg = "test_equivalent_cached_operators: Test failed at the "
                   "end padding subtest, assertFalse received True")
         test_circuit.apply_operator("H0")
-        self.assertTrue(test_circuit.DEBUG_is_operator_cached("H0 I1 I2 I3"),
+        self.assertTrue("H0 I1 I2 I3" in test_circuit._context._operator_cache,
             msg = "test_equivalent_cached_operators: Test failed at the " +
                   "end padding subtest, assertTrue received False")
 
-        # Test front padding and end padding
-        self.assertFalse(test_circuit.DEBUG_is_operator_cached("I0 H1 I2 I3"),
+        # Test prepending padding and appending padding
+        self.assertFalse("I0 H1 I2 I3" in test_circuit._context._operator_cache,
             msg = "test_equivalent_cached_operators: Test failed at the " +
                   "front padding and end padding subtest, assertFalse " +
                   "received True")
         test_circuit.apply_operator("H1")
-        self.assertTrue(test_circuit.DEBUG_is_operator_cached("I0 H1 I2 I3"),
+        self.assertTrue("I0 H1 I2 I3" in test_circuit._context._operator_cache,
             msg = "test_equivalent_cached_operators: Test failed at the " +
                   "front padding and end padding subtest, assertTrue " +
                   "received False")
 
-        # Test front padding, end padding, and ordering
-        self.assertFalse(test_circuit.DEBUG_is_operator_cached("I0 H1 H2 I3"),
+        # Test prepending padding, appending padding, and ordering
+        self.assertFalse("I0 H1 H2 I3" in test_circuit._context._operator_cache,
             msg = "test_equivalent_cached_operators: " +
                   "Test failed at the ordering, front padding and end " +
                   "padding subtest, assertFalse received True")
         test_circuit.apply_operator("H2 H1")
-        self.assertTrue(test_circuit.DEBUG_is_operator_cached("I0 H1 H2 I3"),
+        self.assertTrue("I0 H1 H2 I3" in test_circuit._context._operator_cache,
             msg = "test_equivalent_cached_operators: Test failed at the " +
                   "ordering, front padding and end padding subtest, " +
                   "assertTrue received False")
@@ -159,12 +159,12 @@ class TestQuantumCircuit(unittest.TestCase):
                 expected_state = np.dot(U, expected_state)
                 test_circuit.apply_operator(gate + "0")
                 self.assertTrue(
-                    np.array_equal(test_circuit.DEBUG_get_circuit_state(),
+                    np.array_equal(test_circuit.get_circuit_state(),
                                    expected_state),
                     msg = "test_single_qubit_gate_start: Test failed with " +
                          f"{gate} gate and {i} qubits;" +
                          f"\nExpected: {expected_state}" +
-                         f"\nActual: {test_circuit.DEBUG_get_circuit_state()}")
+                         f"\nActual: {test_circuit.get_circuit_state()}")
 
     def test_single_qubit_gate_end(self):
         for gate in SINGLE_QUBIT_GATES:
@@ -179,12 +179,12 @@ class TestQuantumCircuit(unittest.TestCase):
                 expected_state = np.dot(U, expected_state)
                 test_circuit.apply_operator(gate + str(i - 1))
                 self.assertTrue(
-                    np.array_equal(test_circuit.DEBUG_get_circuit_state(),
+                    np.array_equal(test_circuit.get_circuit_state(),
                                    expected_state),
                     msg = "test_single_qubit_gate_end: Test failed with " +
                          f"{gate} gate and {i} qubits;" +
                          f"\nExpected: {expected_state}" +
-                         f"\nActual: {test_circuit.DEBUG_get_circuit_state()}")
+                         f"\nActual: {test_circuit.get_circuit_state()}")
 
     def test_uniform_single_qubit_gate(self):
         for gate in SINGLE_QUBIT_GATES:
@@ -200,12 +200,12 @@ class TestQuantumCircuit(unittest.TestCase):
                 test_circuit.apply_operator(U_key)
                 self.assertTrue(
                     np.array_equal(
-                        test_circuit.DEBUG_get_circuit_state(),
+                        test_circuit.get_circuit_state(),
                         expected_state),
                     msg = "test_uniform_single_qubit_gate: Test failed with " +
                          f"{gate} gate and {i} qubits;" +
                          f"\nExpected: {expected_state}" +
-                         f"\nActual: {test_circuit.DEBUG_get_circuit_state()}")
+                         f"\nActual: {test_circuit.get_circuit_state()}")
 
     def test_measurement(self):
         for i in range(1, MAX_QUBITS + 1):
@@ -216,7 +216,7 @@ class TestQuantumCircuit(unittest.TestCase):
             test_circuit.measure()
             self.assertTrue(
                 np.array_equal(
-                    test_circuit.DEBUG_get_circuit_state(),
+                    test_circuit.get_circuit_state(),
                     expected_state))
 
             # Apply X⊗n to test_circuit to get the state |1..1>
@@ -227,7 +227,7 @@ class TestQuantumCircuit(unittest.TestCase):
             test_circuit.measure()
             self.assertTrue(
                 np.array_equal(
-                    test_circuit.DEBUG_get_circuit_state(),
+                    test_circuit.get_circuit_state(),
                     expected_state))
 
             # Revert circuit to |0..0> and apply Y⊗n to get |i..i>,
@@ -240,7 +240,7 @@ class TestQuantumCircuit(unittest.TestCase):
             test_circuit.measure()
             self.assertTrue(
                 np.array_equal(
-                    test_circuit.DEBUG_get_circuit_state(),
+                    test_circuit.get_circuit_state(),
                     expected_state))
 
     def test_random_measurement_sampling(self):
@@ -258,7 +258,7 @@ class TestQuantumCircuit(unittest.TestCase):
                     test_circuit.apply_operator(
                         generate_uniform_single_gate_circuit_dsl("H", qubits))
                     test_circuit.measure()
-                    collapsed_state = test_circuit.DEBUG_get_circuit_state()
+                    collapsed_state = test_circuit.get_circuit_state()
                     for k in range(0, 2 ** qubits):
                         if collapsed_state[k] == 1:
                             seen_states.add(k)
@@ -288,7 +288,7 @@ class TestQuantumCircuit(unittest.TestCase):
                 test_circuit.reset_circuit_state()
                 test_circuit.apply_operator("H0")
                 test_circuit.measure()
-                measured_state = test_circuit.DEBUG_get_circuit_state()
+                measured_state = test_circuit.get_circuit_state()
                 self.assertTrue(
                     np.array_equal(accepted_0_state, measured_state) or
                     np.array_equal(accepted_1_state, measured_state))
@@ -297,29 +297,29 @@ class TestQuantumCircuit(unittest.TestCase):
         test_circuit = v.Circuit(4, operator_cache = True)
 
         # CNOT -> CX
-        self.assertFalse(test_circuit.DEBUG_is_operator_cached("CX0,1 I2 I3"),
+        self.assertFalse("CX0,1 I2 I3" in test_circuit._context._operator_cache,
             msg = "test_alias_translation: Test failed when translating CNOT " +
                   "to CX, assertFalse received True")
         test_circuit.apply_operator("CNOT0,1")
-        self.assertTrue(test_circuit.DEBUG_is_operator_cached("CX0,1 I2 I3"),
+        self.assertTrue("CX0,1 I2 I3" in test_circuit._context._operator_cache,
             msg = "test_alias_translation: Test failed when translating CNOT " +
                   "to CX, assertTrue received False")
 
         # TOFFOLI -> CCX
-        self.assertFalse(test_circuit.DEBUG_is_operator_cached("CCX0,1,2 I3"),
+        self.assertFalse("CCX0,1,2 I3" in test_circuit._context._operator_cache,
             msg = "test_alias_translation: Test failed when translating " +
                   "TOFFOLI to CCX, assertFalse received True")
         test_circuit.apply_operator("TOFFOLI0,1,2")
-        self.assertTrue(test_circuit.DEBUG_is_operator_cached("CCX0,1,2 I3"),
+        self.assertTrue("CCX0,1,2 I3" in test_circuit._context._operator_cache,
             msg = "test_alias_translation: Test failed when translating " +
                   "TOFFOLI to CCX, assertTrue received False")
 
         # TOFF -> CCX
-        self.assertFalse(test_circuit.DEBUG_is_operator_cached("I0 CCX1,2,3"),
+        self.assertFalse("I0 CCX1,2,3" in test_circuit._context._operator_cache,
             msg = "test_alias_translation: Test failed when translating TOFF " +
                   "to CCX, assertFalse received True")
         test_circuit.apply_operator("TOFF1,2,3")
-        self.assertTrue(test_circuit.DEBUG_is_operator_cached("I0 CCX1,2,3"),
+        self.assertTrue("I0 CCX1,2,3" in test_circuit._context._operator_cache,
             msg = "test_alias_translation: Test failed when translating TOFF " +
                   "to CCX, assertTrue received False")
 
@@ -361,7 +361,7 @@ class TestQuantumCircuit(unittest.TestCase):
             # Apply CNOT that targets last wire
             test_circuit.apply_operator(f"CNOT{qubits - 1},0")
             test_circuit.apply_operator("X0")
-            circuit_state = test_circuit.DEBUG_get_circuit_state()
+            circuit_state = test_circuit.get_circuit_state()
             # Check the 1st index
             # i.e. the circuit state is transformed to |0>⊗(n-1)|1>
             self.assertEqual(circuit_state[1], 1 + 0j)
@@ -391,7 +391,7 @@ class TestQuantumCircuit(unittest.TestCase):
                 # Collapse state
                 test_circuit.measure()
                 # Check that it collapses to one of the two GHZ states
-                state = test_circuit.DEBUG_get_circuit_state()
+                state = test_circuit.get_circuit_state()
                 if not (np.array_equal(outcome_ghz_0, state) or
                         np.array_equal(outcome_ghz_1, state)):
                     self.fail(f"test_entanglement: Test failed with {i} " +
