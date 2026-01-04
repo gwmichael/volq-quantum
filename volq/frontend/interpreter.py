@@ -21,7 +21,11 @@ class Interpreter:
         if self.arguments[0] == self.DIRECT_EXECUTE_ARGUMENT:
             program = self.arguments[1].split("\n")
         else:
-            with open(self.arguments[0], "r") as file:
+            with open(
+                file = self.arguments[0],
+                mode = "r",
+                encoding = "UTF-8"
+            ) as file:
                 contents = file.read()
             program = contents.split("\n")
 
