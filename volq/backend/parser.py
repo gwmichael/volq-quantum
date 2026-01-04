@@ -1,20 +1,15 @@
 import re
 from .single_qubit_gates import Gate as single_qubit_gates
+from .context import Context
 
 class Parser:
 
     def __init__(
             self,
-            qubits: int,
-            DEBUG_syntax_validation = True
+            circuit_context: Context
         ):
 
-        self._qubits = qubits
-
-        # WARNING: This option is intended for testing new syntax before
-        #          validation is implemented.
-        #          Disabling this creates a risk of infinite loops or crashes!
-        self.DEBUG_syntax_validation = DEBUG_syntax_validation
+        self._context = circuit_context
 
         self.ALIASES = {
             "NOT" : "X",
@@ -25,9 +20,12 @@ class Parser:
 
     def normalise_key(self, operator_key):
 
+        # Store a local copy of qubits from context
+        self._qubits = self._context.get_qubits()
+
         operator_key = self.translate_aliases(operator_key)
 
-        if self.DEBUG_syntax_validation:
+        if self._context.syntax_validation_enabled():
             self.check_legal_syntax(operator_key)
 
         ## Tokenization

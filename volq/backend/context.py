@@ -12,6 +12,10 @@ class Context:
         self._operator_cache_enabled = operator_cache
         self._operator_cache = {}
         self._hardware_mode = hardware_mode
+
+        # WARNING: This option is intended for testing new syntax before
+        #          validation is implemented.
+        #          Disabling this creates a risk of infinite loops or crashes!
         self._syntax_validation_enabled = syntax_validation
 
 

@@ -46,7 +46,7 @@ class Circuit:
         self._output_rounding_dp = output_rounding_dp
 
         # Load parser and compiler
-        self._parser = Parser(self._qubits, DEBUG_syntax_validation)
+        self._parser = Parser(self._context)
         self._compiler = Compiler()
 
 
