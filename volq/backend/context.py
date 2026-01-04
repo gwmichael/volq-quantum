@@ -16,6 +16,7 @@ class Context:
         # WARNING: This option is intended for testing new syntax before
         #          validation is implemented.
         #          Disabling this creates a risk of infinite loops or crashes!
+        # TODO: Display warning to user when syntax validation is off
         self._syntax_validation_enabled = syntax_validation
 
 

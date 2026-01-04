@@ -9,9 +9,8 @@ class Circuit:
             qubits: int,
             operator_cache: bool = False,
             hardware_mode: str = "CPU",
-            DEBUG_syntax_validation: bool = True,
+            syntax_validation: bool = True,
             output_rounding_dp = 5,
-            test_mode: bool = False
         ):
 
         if qubits < 1:
@@ -39,7 +38,7 @@ class Circuit:
             qubits,
             operator_cache,
             hardware_mode,
-            DEBUG_syntax_validation
+            syntax_validation
         )
 
         # The number of qubits is soft-immutable once set. For high performance,
@@ -54,9 +53,6 @@ class Circuit:
         self._circuit_state[0] = 1  # Set circuit state to |00...0⟩
 
         self._output_rounding_dp = output_rounding_dp
-
-        # Set test mode
-        self._test_mode = test_mode
 
         # Load parser and compiler
         self._parser = Parser(self._context)
