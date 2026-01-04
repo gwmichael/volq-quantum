@@ -48,6 +48,11 @@ def convert_bitstring_to_decimal(bitstring):
 
 class TestQuantumCircuit(unittest.TestCase):
 
+    # The warning protected-access is suppressed because encapsulated attributes
+    # are never accessed in production code, only for testing purposes.
+
+    # pylint: disable=protected-access
+
     def test_initialise_circuit(self):
         for i in range(1, MAX_QUBITS + 1):
             qubits = i
