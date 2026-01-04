@@ -32,7 +32,8 @@ class Context:
 
 
     def add_operator_to_cache(self, normalised_key, U):
-        self._operator_cache[normalised_key] = U
+        if self._operator_cache_enabled:
+            self._operator_cache[normalised_key] = U
 
 
     def load_cached_operator(self, key):
