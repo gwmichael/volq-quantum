@@ -363,7 +363,8 @@ class TestQuantumCircuit(unittest.TestCase):
         self.assertTrue(
             np.array_equal(
                 cnot,
-                test_circuit._operator_cache["CX1,0"])) # pylint: disable=protected-access
+                # TODO: Fix protected access bypass
+                test_circuit._context._operator_cache["CX1,0"])) # pylint: disable=protected-access
         reverse_cnot = np.array(
             [[1,0,0,0],
              [0,0,0,1],
@@ -373,7 +374,8 @@ class TestQuantumCircuit(unittest.TestCase):
         self.assertTrue(
             np.array_equal(
                 reverse_cnot,
-                test_circuit._operator_cache["CX0,1"])) # pylint: disable=protected-access
+                # TODO: Fix protected access bypass
+                test_circuit._context._operator_cache["CX0,1"])) # pylint: disable=protected-access
         print("test_cnot_compilation: Test passed")
 
     def test_cnot_execution(self):

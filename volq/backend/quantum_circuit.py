@@ -41,11 +41,8 @@ class Circuit:
 
         # Setup basis vector of qubit states
         self._circuit_state = np.zeros(2 ** self._qubits, dtype = complex)
+        self._circuit_state[0] = 1  # Set circuit state to |00...0⟩
 
-        # Set circuit state to |00...0⟩
-        self._circuit_state[0] = 1
-        self._operator_cache_state = operator_cache
-        self._operator_cache = {}
         self._output_rounding_dp = output_rounding_dp
 
         # Load parser and compiler
@@ -63,13 +60,18 @@ class Circuit:
     def apply_operator(self, key):
         np = self.np
         normalised_key = self._parser.normalise_key(key)
-        if normalised_key in self._operator_cache:
-            U = self._operator_cache[normalised_key]
+        # Check is operator cache enabled?
+        if self._context.operator_cache_enabled():
+            # Cache enabled, so attempt to load operator from cache
+            U = self._context.load_cached_operator(normalised_key)
+            # If U isn't cached, then it will be None, otherwise it'll be anything else
+            if U is None:
+                U = self._compiler.compile_operator(normalised_key)
+                self._context.add_operator_to_cache(normalised_key, U)
         else:
+            # Cache disabled, so compile operator
             U = self._compiler.compile_operator(normalised_key)
-            # If operator cache is enabled, then add compiled operator
-            if self._operator_cache_state:
-                self._operator_cache[normalised_key] = U
+        # Apply operator on circuit state basis vector
         self._circuit_state = np.dot(U, self._circuit_state)
 
 
@@ -172,5 +174,7 @@ class Circuit:
         return self._circuit_state
 
 
+    # TODO: Rewrite unit testing to communicate with context directly
+    # This is a temporary workaround
     def DEBUG_is_operator_cached(self, operator_key):
-        return operator_key in self._operator_cache
+        return operator_key in self._context._operator_cache

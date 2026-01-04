@@ -27,8 +27,15 @@ class Context:
         self._operator_cache_enabled = not self._operator_cache_enabled
 
 
-    def is_operator_cached(self, operator):
-        return True if operator in self._operator_cache else False
+    def add_operator_to_cache(self, normalised_key, U):
+        self._operator_cache[normalised_key] = U
+
+
+    def load_cached_operator(self, key):
+        if (self._operator_cache_enabled == False):
+            return None
+        else:
+            return self._operator_cache[key] if key in self._operator_cache else None
     
 
     def hardware_mode(self):
