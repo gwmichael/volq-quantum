@@ -37,7 +37,7 @@ class Context:
 
 
     def load_cached_operator(self, key):
-        if self._operator_cache_enabled == False:
+        if self._operator_cache_enabled is False:
             return None
         else:
             return self._operator_cache[key] if key in \

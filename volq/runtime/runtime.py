@@ -23,7 +23,7 @@ class Runtime:
         self._results = {}
 
     def set_qubits(self, qubits):
-        if self._circuit == None:
+        if self._circuit is None:
             self._qubits = qubits
         else:
             # TODO: Throw exception that circuit is already initialised,
@@ -87,12 +87,12 @@ class Runtime:
     def execute_immediate(self, instruction: Instruction):
         match instruction.opcode:
             case Opcode.QUBITS:
-                if self._circuit_initialised == True:
+                if self._circuit_initialised is True:
                     # TODO Throw exception that circuit is already initialised
                     pass
                 self._qubits = int(instruction.operand)
             case Opcode.RUNS:
-                if self._circuit_initialised == True:
+                if self._circuit_initialised is True:
                     # TODO Throw exception that circuit is already initialised
                     pass
                 self._runs = int(instruction.operand)
