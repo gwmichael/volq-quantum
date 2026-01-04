@@ -75,7 +75,6 @@ In the output space below, we can see that P(|00000000⟩⊗|ψ⟩) = 0, where |
   - General n-qubit controlled gates, which can be generated from scratch and apply any single qubit gate for any n control bits in any order
 - Domain Specific Language (DSL) with an interpreter and runtime, for generating unitary matrix operators from string inputs
 - Easy-to-read string representation of the quantum circuit state
-- Support for running on the CPU or GPU
 - Thorough unit testing, to rigorously prove the validity and correctness of the framework
 
 ## Planned Features
@@ -93,4 +92,5 @@ This list is not exhaustive, nor are any features below guaranteed:
 	- Grover's Algorithm
 	- Shor's Algorithm
 - Compiler and runtime optimisations to speed up simulation of large-scale circuits
+- Support for running on Nvidia and AMD GPUs
 - Extensive documentation on the quantum circuit model and adjacent algorithms

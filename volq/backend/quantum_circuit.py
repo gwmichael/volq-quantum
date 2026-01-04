@@ -19,10 +19,12 @@ class Circuit:
                 "Qubits parameter must be at least 1, got " + str(qubits))
 
         # Choose to load cupy (numpy but for GPUs) or numpy
-        if hardware_mode == "GPU":
-            import cupy as np
-        else:
-            import numpy as np
+        # 04-Jan-2025: GPU support is temporarily disabled for v0.4.0-alpha
+        # if hardware_mode == "GPU":
+        #     import cupy as np
+        # else:
+        #     import numpy as np
+        import numpy as np
         self.np = np
         np.set_printoptions(
             threshold = np.inf,
@@ -30,6 +32,7 @@ class Circuit:
             precision = 15,
             suppress = True
         )
+        
 
         # Create a Context object for sharing circuit information between other classes
         self._context = Context(qubits, operator_cache, hardware_mode, DEBUG_syntax_validation)
