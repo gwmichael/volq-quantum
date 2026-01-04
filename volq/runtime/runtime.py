@@ -68,7 +68,7 @@ class Runtime:
 
     # Execute the whole program once
     def execute_until_last_instruction(self):
-        for i in range(self._instruction_pointer, len(self._program)):
+        for _ in range(self._instruction_pointer, len(self._program)):
             self.execute_next_instruction()
 
     # Execute the whole program {self._runs} times
