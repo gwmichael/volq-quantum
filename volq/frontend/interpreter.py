@@ -18,7 +18,7 @@ class Interpreter:
 
 
     def main(self):
-        if (self.arguments[0] == self.DIRECT_EXECUTE_ARGUMENT):
+        if self.arguments[0] == self.DIRECT_EXECUTE_ARGUMENT:
             program = self.arguments[1].split("\n")
         else:
             with open(self.arguments[0], "r") as file:

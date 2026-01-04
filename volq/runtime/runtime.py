@@ -23,7 +23,7 @@ class Runtime:
         self._results = {}
 
     def set_qubits(self, qubits):
-        if (self._circuit == None):
+        if self._circuit == None:
             self._qubits = qubits
         else:
             # TODO: Throw exception that circuit is already initialised,
