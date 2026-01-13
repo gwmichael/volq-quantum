@@ -6,12 +6,10 @@ from .quantum_primitives import Projector
 class Compiler:
 
     def __init__(self):
-
-        self.np = np
+        pass
 
 
     def compile_operator(self, operator_key):
-        np = self.np
         # If operator U is already cached, skip
         # Parse string to array of operators
         operator_construction = self.parse_key_to_matrices(operator_key)
@@ -40,8 +38,6 @@ class Compiler:
 
 
     def compile_controlled_gate(self, token):
-        np = self.np
-
         # Count number of control wires
         control_wires = 0
         for char in token:

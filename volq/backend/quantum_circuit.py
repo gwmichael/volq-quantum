@@ -1,6 +1,7 @@
 from .parser import Parser
 from .compiler import Compiler
 from .context import Context
+import numpy as np
 
 class Circuit:
 
@@ -17,14 +18,6 @@ class Circuit:
             raise ValueError(
                 "Qubits parameter must be at least 1, got " + str(qubits))
 
-        # Choose to load cupy (numpy but for GPUs) or numpy
-        # 04-Jan-2025: GPU support is temporarily disabled for v0.4.0-alpha
-        # if hardware_mode == "GPU":
-        #     import cupy as np
-        # else:
-        #     import numpy as np
-        import numpy as np
-        self.np = np
         np.set_printoptions(
             threshold = np.inf,
             linewidth = np.inf,
@@ -60,14 +53,12 @@ class Circuit:
 
 
     def reset_circuit_state(self):
-        np = self.np
         # Soft reset the circuit state to |00...0⟩
         self._circuit_state = np.zeros(2 ** self._qubits, dtype = complex)
         self._circuit_state[0] = 1
 
 
     def apply_operator(self, key):
-        np = self.np
         normalised_key = self._parser.normalise_key(key)
         # Check is operator cache enabled?
         if self._context.operator_cache_enabled():
@@ -86,7 +77,6 @@ class Circuit:
 
 
     def measure(self):
-        np = self.np
         # Make a copy of self._circuit_state with Born's rule applied
         probabilities = np.abs(self._circuit_state) ** 2
         # Select a random state based on the probability of that outcome
@@ -98,8 +88,6 @@ class Circuit:
 
 
     def get_state_as_string(self):
-        np = self.np
-
         ## Get list of all states with a non-zero amplitude
         all_circuit_states = []
         for i in range(2 ** self._qubits):
