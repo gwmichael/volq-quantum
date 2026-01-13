@@ -9,7 +9,6 @@ class Circuit:
             self,
             qubits: int,
             operator_cache: bool = False,
-            hardware_mode: str = "CPU",
             syntax_validation: bool = True,
             output_rounding_dp = 5,
         ):
@@ -30,7 +29,6 @@ class Circuit:
         self._context = Context(
             qubits,
             operator_cache,
-            hardware_mode,
             syntax_validation
         )
 

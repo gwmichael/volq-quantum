@@ -4,14 +4,12 @@ class Context:
             self,
             qubits,
             operator_cache,
-            hardware_mode,
             syntax_validation
         ):
 
         self._qubits = qubits # Qubits has no setter by design
         self._operator_cache_enabled = operator_cache
         self._operator_cache = {}
-        self._hardware_mode = hardware_mode
 
         # WARNING: This option is intended for testing new syntax before
         #          validation is implemented.
@@ -43,10 +41,6 @@ class Context:
         else:
             return self._operator_cache[key] if key in \
                 self._operator_cache else None
-
-
-    def hardware_mode(self):
-        return self._hardware_mode
 
 
     def syntax_validation_enabled(self):
