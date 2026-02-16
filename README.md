@@ -13,16 +13,32 @@ This project is 100% coded in Python with NumPy.
 
 This project is currently in the **alpha** stage. The DSL syntax and backend API **will** change over time.
 ## Getting Started
-Volq requires Python and NumPy to run. You can check these are installed with the following:
+To start running Volq code on your system, follow these steps to setup your environment.
+### 1. Python installation
+Volq requires Python to run. You can check this is installed by making sure you can run this in your terminal:
 ```bash
 python3 --version
-python3 -m pip show numpy
 ```
-Next, clone this Git repository using the command below:
+### 2. Clone git repository
 ```bash
 git clone https://github.com/michaelchips/volq-quantum.git
+cd volq-quantum
 ```
-Change directory into the cloned repository folder, then you can start running Volq programs with the interpreter using:
+### 3. Recommended: Create a virtual environment
+Creating a virtual environment is optional but recommended, especially if your OS runs a managed Python environment.
+```bash
+python3 -m venv .venv
+# If you're on Linux, use
+source .venv/bin/activate
+# If you're on Windows, use
+.venv\Scripts\activate 
+```
+### 4. Install dependencies
+```bash
+pip install -r requirements.txt
+```
+## Running Volq
+Once you've installed dependencies, you can start running Volq programs with the interpreter using:
 ```bash
 python3 -m volq.frontend.interpreter YOURPROGRAMFILENAMEHERE
 ```
@@ -94,3 +110,4 @@ This list is not exhaustive, nor are any features below guaranteed:
 - Compiler and runtime optimisations to speed up simulation of large-scale circuits
 - Support for running on Nvidia and AMD GPUs
 - Extensive documentation on the quantum circuit model and adjacent algorithms
+
