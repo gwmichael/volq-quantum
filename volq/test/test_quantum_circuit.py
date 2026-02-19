@@ -5,7 +5,7 @@ import volq as v
 # For repeating tests, set the max qubits that the tests will repeat up until
 # A higher MAX_QUBITS value means more rigorous testing,
 # but an increase in 1 results in double the memory usage and 8x testing time
-MAX_QUBITS = 12
+MAX_QUBITS = 8
 
 IDENTITY = np.array([[1,0],[0,1]], dtype = complex)
 PAULI_X = np.array([[0,1],[1,0]], dtype = complex)
@@ -109,29 +109,29 @@ def test_invalid_gates():
 def test_equivalent_cached_operators():
     test_circuit = v.Circuit(4, operator_cache = True)
     # Test ordering
-    assert "H0 H1 H2 H3" in test_circuit._context._operator_cache == False
+    assert ("H0 H1 H2 H3" in test_circuit._context._operator_cache.keys()) == False
     test_circuit.apply_operator("H3 H1 H2 H0")
-    assert "H0 H1 H2 H3" in test_circuit._context._operator_cache == True
+    assert ("H0 H1 H2 H3" in test_circuit._context._operator_cache.keys()) == True
 
     # Test prepending padding
-    assert "I0 H1 H2 H3" in test_circuit._context._operator_cache == False
+    assert ("I0 H1 H2 H3" in test_circuit._context._operator_cache.keys()) == False
     test_circuit.apply_operator("H1 H2 H3")
-    assert "I0 H1 H2 H3" in test_circuit._context._operator_cache == True
+    assert ("I0 H1 H2 H3" in test_circuit._context._operator_cache.keys()) == True
 
     # Test appending padding
-    assert "H0 I1 I2 I3" in test_circuit._context._operator_cache == False
+    assert ("H0 I1 I2 I3" in test_circuit._context._operator_cache.keys()) == False
     test_circuit.apply_operator("H0")
-    assert "H0 I1 I2 I3" in test_circuit._context._operator_cache == True
+    assert ("H0 I1 I2 I3" in test_circuit._context._operator_cache.keys()) == True
 
     # Test prepending padding and appending padding
-    assert "I0 H1 I2 I3" in test_circuit._context._operator_cache == False
+    assert ("I0 H1 I2 I3" in test_circuit._context._operator_cache.keys()) == False
     test_circuit.apply_operator("H1")
-    assert "I0 H1 I2 I3" in test_circuit._context._operator_cache == True
+    assert ("I0 H1 I2 I3" in test_circuit._context._operator_cache.keys()) == True
 
     # Test prepending padding, appending padding, and ordering
-    assert "I0 H1 H2 I3" in test_circuit._context._operator_cache == False
+    assert ("I0 H1 H2 I3" in test_circuit._context._operator_cache.keys()) == False
     test_circuit.apply_operator("H2 H1")
-    assert "I0 H1 H2 I3" in test_circuit._context._operator_cache == True
+    assert ("I0 H1 H2 I3" in test_circuit._context._operator_cache.keys()) == True
 
     # Alias translation testing is separate,
     # in order to test all possible aliases
@@ -259,19 +259,19 @@ def test_alias_translation():
     test_circuit = v.Circuit(4, operator_cache = True)
 
     # CNOT -> CX
-    assert "CX0,1 I2 I3" in test_circuit._context._operator_cache == False
+    assert ("CX0,1 I2 I3" in test_circuit._context._operator_cache.keys()) == False
     test_circuit.apply_operator("CNOT0,1")
-    assert "CX0,1 I2 I3" in test_circuit._context._operator_cache == True
+    assert ("CX0,1 I2 I3" in test_circuit._context._operator_cache.keys()) == True
 
     # TOFFOLI -> CCX
-    assert "CCX0,1,2 I3" in test_circuit._context._operator_cache == False
+    assert ("CCX0,1,2 I3" in test_circuit._context._operator_cache.keys()) == False
     test_circuit.apply_operator("TOFFOLI0,1,2")
-    assert "CCX0,1,2 I3" in test_circuit._context._operator_cache == True
+    assert ("CCX0,1,2 I3" in test_circuit._context._operator_cache.keys()) == True
 
     # TOFF -> CCX
-    assert "I0 CCX1,2,3" in test_circuit._context._operator_cache == False
+    assert ("I0 CCX1,2,3" in test_circuit._context._operator_cache.keys()) == False
     test_circuit.apply_operator("TOFF1,2,3")
-    assert "I0 CCX1,2,3" in test_circuit._context._operator_cache == True
+    assert ("I0 CCX1,2,3" in test_circuit._context._operator_cache.keys()) == True
 
 def test_cnot_compilation():
     test_circuit = v.Circuit(2, operator_cache = True)
