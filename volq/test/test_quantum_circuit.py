@@ -56,8 +56,7 @@ def test_initialise_circuit():
         qubits = i
         test_circuit = v.Circuit(qubits)
         expected_state = generate_ket_0_state(qubits)
-        assert np.array_equal(
-            test_circuit.get_circuit_state(), expected_state) == True
+        assert np.array_equal(test_circuit.get_circuit_state(), expected_state)
 
 def test_invalid_qubits():
     # Test zero
@@ -109,29 +108,29 @@ def test_invalid_gates():
 def test_equivalent_cached_operators():
     test_circuit = v.Circuit(4, operator_cache = True)
     # Test ordering
-    assert ("H0 H1 H2 H3" in test_circuit._context._operator_cache.keys()) == False
+    assert not "H0 H1 H2 H3" in test_circuit._context._operator_cache.keys()
     test_circuit.apply_operator("H3 H1 H2 H0")
-    assert ("H0 H1 H2 H3" in test_circuit._context._operator_cache.keys()) == True
+    assert "H0 H1 H2 H3" in test_circuit._context._operator_cache.keys()
 
     # Test prepending padding
-    assert ("I0 H1 H2 H3" in test_circuit._context._operator_cache.keys()) == False
+    assert not "I0 H1 H2 H3" in test_circuit._context._operator_cache.keys()
     test_circuit.apply_operator("H1 H2 H3")
-    assert ("I0 H1 H2 H3" in test_circuit._context._operator_cache.keys()) == True
+    assert "I0 H1 H2 H3" in test_circuit._context._operator_cache.keys()
 
     # Test appending padding
-    assert ("H0 I1 I2 I3" in test_circuit._context._operator_cache.keys()) == False
+    assert not "H0 I1 I2 I3" in test_circuit._context._operator_cache.keys()
     test_circuit.apply_operator("H0")
-    assert ("H0 I1 I2 I3" in test_circuit._context._operator_cache.keys()) == True
+    assert "H0 I1 I2 I3" in test_circuit._context._operator_cache.keys()
 
     # Test prepending padding and appending padding
-    assert ("I0 H1 I2 I3" in test_circuit._context._operator_cache.keys()) == False
+    assert not "I0 H1 I2 I3" in test_circuit._context._operator_cache.keys()
     test_circuit.apply_operator("H1")
-    assert ("I0 H1 I2 I3" in test_circuit._context._operator_cache.keys()) == True
+    assert "I0 H1 I2 I3" in test_circuit._context._operator_cache.keys()
 
     # Test prepending padding, appending padding, and ordering
-    assert ("I0 H1 H2 I3" in test_circuit._context._operator_cache.keys()) == False
+    assert not "I0 H1 H2 I3" in test_circuit._context._operator_cache.keys()
     test_circuit.apply_operator("H2 H1")
-    assert ("I0 H1 H2 I3" in test_circuit._context._operator_cache.keys()) == True
+    assert "I0 H1 H2 I3" in test_circuit._context._operator_cache.keys()
 
     # Alias translation testing is separate,
     # in order to test all possible aliases
@@ -148,8 +147,7 @@ def test_single_qubit_gate_start():
                 U = np.kron(U, IDENTITY)
             expected_state = np.dot(U, expected_state)
             test_circuit.apply_operator(gate + "0")
-            assert np.array_equal(test_circuit.get_circuit_state(),
-                                expected_state) == True
+            assert np.array_equal(test_circuit.get_circuit_state(), expected_state)
 
 def test_single_qubit_gate_end():
     for gate in SINGLE_QUBIT_GATES:
@@ -163,8 +161,7 @@ def test_single_qubit_gate_end():
             U = np.kron(U, SINGLE_QUBIT_GATES[gate])
             expected_state = np.dot(U, expected_state)
             test_circuit.apply_operator(gate + str(i - 1))
-            assert np.array_equal(test_circuit.get_circuit_state(),
-                                expected_state) == True
+            assert np.array_equal(test_circuit.get_circuit_state(), expected_state)
 
 def test_uniform_single_qubit_gate():
     for gate in SINGLE_QUBIT_GATES:
@@ -178,8 +175,7 @@ def test_uniform_single_qubit_gate():
             expected_state = np.dot(U, expected_state)
             U_key = generate_uniform_single_gate_circuit_dsl(gate, qubits)
             test_circuit.apply_operator(U_key)
-            assert np.array_equal(test_circuit.get_circuit_state(),
-                    expected_state) == True
+            assert np.array_equal(test_circuit.get_circuit_state(), expected_state)
 
 def test_measurement():
     for i in range(1, MAX_QUBITS + 1):
@@ -188,8 +184,7 @@ def test_measurement():
         # test_circuit is initialised as |0..0>, check that we measure zero
         expected_state = generate_ket_0_state(qubits)
         test_circuit.measure()
-        assert np.array_equal(test_circuit.get_circuit_state(),
-                expected_state) == True
+        assert np.array_equal(test_circuit.get_circuit_state(), expected_state)
 
         # Apply X⊗n to test_circuit to get the state |1..1>
         # Then apply measurement and check
@@ -197,8 +192,7 @@ def test_measurement():
         test_circuit.apply_operator(
             generate_uniform_single_gate_circuit_dsl("X", qubits))
         test_circuit.measure()
-        assert np.array_equal(test_circuit.get_circuit_state(),
-                expected_state) == True
+        assert np.array_equal(test_circuit.get_circuit_state(), expected_state)
 
         # Revert circuit to |0..0> and apply Y⊗n to get |i..i>,
         # Then check that it collapses to |1..1>
@@ -208,8 +202,7 @@ def test_measurement():
         test_circuit.apply_operator(
             generate_uniform_single_gate_circuit_dsl("Y", qubits))
         test_circuit.measure()
-        assert np.array_equal(test_circuit.get_circuit_state(),
-                expected_state) == True
+        assert np.array_equal(test_circuit.get_circuit_state(), expected_state)
 
 def test_random_measurement_sampling():
     for i in range(1, MAX_QUBITS + 1):
@@ -237,7 +230,7 @@ def test_random_measurement_sampling():
                 test_passed = True
             else:
                 reruns -= 1
-        assert test_passed == True
+        assert test_passed
 
 def test_partial_superposition_measurement():
     for i in range(2, MAX_QUBITS + 1):
@@ -253,25 +246,25 @@ def test_partial_superposition_measurement():
             test_circuit.apply_operator("H0")
             test_circuit.measure()
             measured_state = test_circuit.get_circuit_state()
-            assert np.array_equal(accepted_0_state, measured_state) == True or np.array_equal(accepted_1_state, measured_state) == True
+            assert np.array_equal(accepted_0_state, measured_state) or np.array_equal(accepted_1_state, measured_state)
 
 def test_alias_translation():
     test_circuit = v.Circuit(4, operator_cache = True)
 
     # CNOT -> CX
-    assert ("CX0,1 I2 I3" in test_circuit._context._operator_cache.keys()) == False
+    assert not "CX0,1 I2 I3" in test_circuit._context._operator_cache.keys()
     test_circuit.apply_operator("CNOT0,1")
-    assert ("CX0,1 I2 I3" in test_circuit._context._operator_cache.keys()) == True
+    assert "CX0,1 I2 I3" in test_circuit._context._operator_cache.keys()
 
     # TOFFOLI -> CCX
-    assert ("CCX0,1,2 I3" in test_circuit._context._operator_cache.keys()) == False
+    assert not "CCX0,1,2 I3" in test_circuit._context._operator_cache.keys()
     test_circuit.apply_operator("TOFFOLI0,1,2")
-    assert ("CCX0,1,2 I3" in test_circuit._context._operator_cache.keys()) == True
+    assert "CCX0,1,2 I3" in test_circuit._context._operator_cache.keys()
 
     # TOFF -> CCX
-    assert ("I0 CCX1,2,3" in test_circuit._context._operator_cache.keys()) == False
+    assert not "I0 CCX1,2,3" in test_circuit._context._operator_cache.keys()
     test_circuit.apply_operator("TOFF1,2,3")
-    assert ("I0 CCX1,2,3" in test_circuit._context._operator_cache.keys()) == True
+    assert "I0 CCX1,2,3" in test_circuit._context._operator_cache.keys()
 
 def test_cnot_compilation():
     test_circuit = v.Circuit(2, operator_cache = True)
@@ -284,18 +277,14 @@ def test_cnot_compilation():
          [0,0,0,1],
          [0,0,1,0]],
         dtype = complex)
-    assert np.array_equal(
-            cnot,
-            test_circuit._context._operator_cache["CX1,0"]) == True # pylint: disable=protected-access
+    assert np.array_equal(cnot, test_circuit._context._operator_cache["CX1,0"]) # pylint: disable=protected-access
     reverse_cnot = np.array(
         [[1,0,0,0],
          [0,0,0,1],
          [0,0,1,0],
          [0,1,0,0]],
         dtype = complex)
-    assert np.array_equal(
-            reverse_cnot,
-            test_circuit._context._operator_cache["CX0,1"]) == True # pylint: disable=protected-access
+    assert np.array_equal(reverse_cnot, test_circuit._context._operator_cache["CX0,1"]) # pylint: disable=protected-access
 
 def test_cnot_execution():
     for i in range(2, MAX_QUBITS + 1):
