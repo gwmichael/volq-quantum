@@ -5,7 +5,7 @@ import volq as v
 # For repeating tests, set the max qubits that the tests will repeat up until
 # A higher MAX_QUBITS value means more rigorous testing,
 # but an increase in 1 results in double the memory usage and 8x testing time
-MAX_QUBITS = 8
+MAX_QUBITS = 12
 
 IDENTITY = np.array([[1,0],[0,1]], dtype = complex)
 PAULI_X = np.array([[0,1],[1,0]], dtype = complex)
