@@ -1,6 +1,7 @@
 import pytest as pt
 import numpy as np
 import volq as v
+import volq.exceptions as ve
 
 # For repeating tests, set the max qubits that the tests will repeat up until
 # A higher MAX_QUBITS value means more rigorous testing,
@@ -60,49 +61,49 @@ def test_initialise_circuit():
 
 def test_invalid_qubits():
     # Test zero
-    with pt.raises(ValueError):
+    with pt.raises(ve.VolqSyntaxError):
         v.Circuit(0)
     # Test negative
-    with pt.raises(ValueError):
+    with pt.raises(ve.VolqSyntaxError):
         v.Circuit(-1)
 
 def test_invalid_gates():
     test_circuit = v.Circuit(2)
     ## Syntactically incorrect operator testing
     # Empty/no gates
-    with pt.raises(ValueError):
+    with pt.raises(ve.VolqSyntaxError):
         test_circuit.apply_operator("")
     # Gate only
-    with pt.raises(ValueError):
+    with pt.raises(ve.VolqSyntaxError):
         test_circuit.apply_operator("H")
     # Index only
-    with pt.raises(ValueError):
+    with pt.raises(ve.VolqSyntaxError):
         test_circuit.apply_operator("00")
     # Whitespace
-    with pt.raises(ValueError):
+    with pt.raises(ve.VolqSyntaxError):
         test_circuit.apply_operator("  ")
     # Symbols that are not valid syntax
-    with pt.raises(ValueError):
+    with pt.raises(ve.VolqSyntaxError):
         test_circuit.apply_operator("!!")
 
     # Test too many gates
-    with pt.raises(ValueError):
+    with pt.raises(ve.VolqSyntaxError):
         test_circuit.apply_operator("H0 H1 H2")
 
     # Test gate outside index
-    with pt.raises(ValueError):
+    with pt.raises(ve.VolqSyntaxError):
         test_circuit.apply_operator("H9999")
-    with pt.raises(ValueError):
+    with pt.raises(ve.VolqSyntaxError):
         test_circuit.apply_operator("CNOT0,9999")
-    with pt.raises(ValueError):
+    with pt.raises(ve.VolqSyntaxError):
         test_circuit.apply_operator("CNOT9999,0")
 
     # Test invalid syntax splitting indices in a controlled gate
-    with pt.raises(ValueError):
+    with pt.raises(ve.VolqSyntaxError):
         test_circuit.apply_operator("CNOT0;1")
-    with pt.raises(ValueError):
+    with pt.raises(ve.VolqSyntaxError):
         test_circuit.apply_operator("CNOT0#1")
-    with pt.raises(ValueError):
+    with pt.raises(ve.VolqSyntaxError):
         test_circuit.apply_operator("CNOT0.1")
 
 def test_equivalent_cached_operators():
