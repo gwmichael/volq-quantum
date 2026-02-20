@@ -1,0 +1,2 @@
+class VolqSyntaxError(Exception):
+    pass
