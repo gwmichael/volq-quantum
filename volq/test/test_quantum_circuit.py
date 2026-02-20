@@ -61,10 +61,10 @@ def test_initialise_circuit():
 
 def test_invalid_qubits():
     # Test zero
-    with pt.raises(ve.VolqSyntaxError):
+    with pt.raises(ve.VolqQubitsError):
         v.Circuit(0)
     # Test negative
-    with pt.raises(ve.VolqSyntaxError):
+    with pt.raises(ve.VolqQubitsError):
         v.Circuit(-1)
 
 def test_invalid_gates():
