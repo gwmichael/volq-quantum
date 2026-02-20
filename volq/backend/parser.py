@@ -1,4 +1,5 @@
 import re
+import volq.exceptions as ve
 from .single_qubit_gates import Gate as single_qubit_gates
 from .context import Context
 
@@ -65,7 +66,7 @@ class Parser:
         # this means more gates have been added than there are qubits in the
         # circuit
         if gate_cursor > self._qubits:
-            raise ValueError("Operator has more gates than there are " +
+            raise ve.VolqSyntaxError("Operator has more gates than there are " +
             "qubits in the circuit, invalid shape. Qubits in circuit is " + 
             str(self._qubits))
 
@@ -118,7 +119,7 @@ class Parser:
         for token in tokenized_key:
             ## Length check
             if len(token) < 2:
-                raise ValueError(f"Invalid gate provided: Received {token}, " +
+                raise ve.VolqSyntaxError(f"Invalid gate provided: Received {token}, " +
                     "expected a gate of length at least 2")
 
             ## Gate validity check
@@ -129,7 +130,7 @@ class Parser:
             # Then check gate
             gate = token[operator_cursor]
             if gate not in single_qubit_gates:
-                raise ValueError(f"Invalid gate provided: Received {token}, " +
+                raise ve.VolqSyntaxError(f"Invalid gate provided: Received {token}, " +
                     "{gate} cannot be resolved to a valid gate")
 
             ## Index check
@@ -137,7 +138,16 @@ class Parser:
             gate_indices = token[operator_cursor + 1:]
             split_gate_indices = gate_indices.split(",")
             for gate_index in split_gate_indices:
-                if int(gate_index) > self._qubits:
-                    raise ValueError("Invalid gate provided: Received " +
-                        f"{token}, applies to wire {gate_index} but there " +
-                        f"are only {str(self._qubits)} qubits")
+                try:
+                    # TODO: Edge case where gate_index == self._qubits
+                    if int(gate_index) > self._qubits:
+                        raise ve.VolqSyntaxError("Invalid gate provided: Received " +
+                            f"{token}, applies to wire {gate_index} but there " +
+                            f"are only {str(self._qubits)} qubits")
+                # ValueError will be raised if gate_index is a non-integer value
+                except ValueError:
+                    raise ve.VolqSyntaxError(
+                        "Syntax error: Wire index of gate must be an integer" +
+                        f" between 0 and {str(self._qubits)} (number of" +
+                        f" qubits in the circuit), received {gate_index}")
+                

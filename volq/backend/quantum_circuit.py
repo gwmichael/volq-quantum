@@ -2,6 +2,7 @@ from .parser import Parser
 from .compiler import Compiler
 from .context import Context
 import numpy as np
+import volq.exceptions as ve
 
 class Circuit:
 
@@ -14,7 +15,7 @@ class Circuit:
         ):
 
         if qubits < 1:
-            raise ValueError(
+            raise ve.VolqQubitsError(
                 "Qubits parameter must be at least 1, got " + str(qubits))
 
         np.set_printoptions(
