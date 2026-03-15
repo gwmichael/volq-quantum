@@ -7,7 +7,10 @@ class TokenType(enum.Enum):
     OPERATOR = "OPERATOR"
     SEPARATOR = "SEPARATOR"
     COMMENT = "COMMENT"
+    NEWLINE = "NEWLINE"
     EOF = "EOF"
+    NONE = "NONE"
+
 
 class Token:
 
